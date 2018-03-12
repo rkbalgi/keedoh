@@ -27,11 +27,12 @@ public class SpecSelectionDialog extends JDialog implements ActionListener {
         setLocation(UIHelper.getPreferredLocation(parent));
         setModal(true);
         setTitle("Select Spec");
-        initComponents();
+
         setSize(400, 120);
     }
 
     public Spec showDialog() {
+        initComponents();
         setVisible(true);
         return (selectedSpec);
     }

@@ -50,7 +50,6 @@ public class Spec extends Model {
 
     public void add(Field field) {
         fields.add(field);
-
     }
 
     public List<Field> getFields() {

@@ -7,11 +7,14 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.DefaultEventExecutor;
 import org.apache.logging.log4j.LogManager;
@@ -43,10 +46,13 @@ public class Listeners {
             return;
         } else {
             ServerBootstrap bootstrap = new ServerBootstrap();
-            bootstrap.handler(new ListenerChannelHandler());
+            bootstrap.childHandler(new ListenerChannelHandler());
             bootstrap.channel(NioServerSocketChannel.class);
+            bootstrap.group(new NioEventLoopGroup());
+            bootstrap.childOption(ChannelOption.AUTO_READ, true);
 
             ChannelGroup grp = new DefaultChannelGroup(new DefaultEventExecutor());
+
             ChannelFuture future = bootstrap.bind(new InetSocketAddress(config.getPort()));
             Channel channel = future.syncUninterruptibly().channel();
 
@@ -99,9 +105,10 @@ public class Listeners {
     public static void sendReply(Spec spec, MessageData msgData) {
         for (ListenerConfig config : specConfigMap.keySet()) {
             if (specConfigMap.get(config) == spec) {
-                byte[] data = config.getMli().getMliImpl().toNetwork(msgData.assemble(true));
+                byte[] data = config.getMli().getMliImpl().toNetwork(msgData.assemble(false));
                 ByteBuf buffer = Unpooled.copiedBuffer(data);
-                listenersMap.get(config).write(buffer);
+                log.debug("Sending reply - " + ByteBufUtil.prettyHexDump(buffer));
+                listenersMap.get(config).writeAndFlush(buffer);
                 break;
             }
         }

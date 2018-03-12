@@ -12,13 +12,13 @@ import java.util.Vector;
 
 public class UIHelper {
 
-    private static final ImageIcon IMAGE_ICON = new ImageIcon(
-            ClassLoader.getSystemResource("images/keedoh_node.gif"));
+    private static final ImageIcon IMAGE_ICON =
+            new ImageIcon(ClassLoader.getSystemResource("images/keedoh_node.gif"));
     public static Font STANDARD_FONT = new Font("calibri", Font.PLAIN, 11);
     public static Font STANDARD_BOLD_FONT = new Font("calibri", Font.BOLD, 11);
 
-    public static JMenuItem newJMenuItem(String label, int keyCode,
-                                         ActionListener actionListener, String actionCommand) {
+    public static JMenuItem newJMenuItem(
+            String label, int keyCode, ActionListener actionListener, String actionCommand) {
 
         JMenuItem item = new JMenuItem(label);
         item.setMnemonic(keyCode);
@@ -29,8 +29,7 @@ public class UIHelper {
         return (item);
     }
 
-    public static JMenu newJMenu(String label, int keyCode,
-                                 ActionListener listener) {
+    public static JMenu newJMenu(String label, int keyCode, ActionListener listener) {
         JMenu menu = new JMenu(label);
         menu.setMnemonic(keyCode);
         menu.addActionListener(listener);
@@ -45,8 +44,7 @@ public class UIHelper {
         return (field);
     }
 
-    public static JButton newButton(String title, String actionCommand,
-                                    ActionListener listener) {
+    public static JButton newButton(String title, String actionCommand, ActionListener listener) {
         JButton button = new JButton();
         button.setText(title);
         button.setActionCommand(actionCommand);
@@ -90,24 +88,19 @@ public class UIHelper {
         return (field);
     }
 
-    public static File getUserSelectedFile(Component parentComponent,
-                                           FILE_TYPE fileType, boolean open) {
+    public static File getUserSelectedFile(
+            Component parentComponent, FILE_TYPE fileType, boolean open) {
         JFileChooser chooser = null;
-        if (!open)
-            chooser = new JFileChooser("Save");
-        else
-            chooser = new JFileChooser("Open");
+        if (!open) chooser = new JFileChooser("Save");
+        else chooser = new JFileChooser("Open");
         if (KeedohCache.getRecentDirectory() != null) {
             chooser.setCurrentDirectory(KeedohCache.getRecentDirectory());
         }
         chooser.setFont(STANDARD_FONT);
         if (fileType == FILE_TYPE.TEXT) {
-            chooser.setFileFilter(new FileNameExtensionFilter("Text Files",
-                    "txt"));
+            chooser.setFileFilter(new FileNameExtensionFilter("Text Files", "txt"));
         } else if (fileType == FILE_TYPE.HTML) {
-            chooser.setFileFilter(new FileNameExtensionFilter("HTML Files",
-                    "html"));
-
+            chooser.setFileFilter(new FileNameExtensionFilter("HTML Files", "html"));
         }
         setFont(chooser);
         File file = null;
@@ -120,13 +113,11 @@ public class UIHelper {
             if (chooser.showSaveDialog(parentComponent) == JFileChooser.APPROVE_OPTION) {
                 file = chooser.getSelectedFile();
             }
-
         }
         if (file != null) {
             KeedohCache.setRecentDirectory(file.getParentFile());
         }
         return (file);
-
     }
 
     private static void setFont(JComponent chooser) {
@@ -136,23 +127,24 @@ public class UIHelper {
                 setFont((JComponent) component);
             }
         }
-
     }
 
-    public static void showErrorDialog(Component component, String stringMsg,
-                                       Exception e) {
-        JOptionPane.showMessageDialog(component,
-                stringMsg + ":" + e.getMessage());
+    public static void showErrorDialog(Component component, String stringMsg, Exception e) {
+        JOptionPane.showMessageDialog(component, stringMsg + ":" + e.getMessage());
     }
 
     public static Point getPreferredLocation(JComponent parent) {
-        return (new Point(parent.getX() + (parent.getWidth() / 2),
-                parent.getY() + (parent.getHeight() / 2)));
+        return (new Point(
+                parent.getX() + (parent.getWidth() / 2), parent.getY() + (parent.getHeight() / 2)));
     }
 
     public static JList newList(Vector v) {
         JList lst = new JList(v);
         lst.setFont(STANDARD_FONT);
         return (lst);
+    }
+
+    public static void showErrorDialog(Component component, String stringMsg) {
+        JOptionPane.showMessageDialog(component, stringMsg);
     }
 }

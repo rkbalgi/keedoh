@@ -1,11 +1,12 @@
 package com.daalitoy.apps.keedoh.messaging;
 
+import com.daalitoy.apps.keedoh.ui.util.KeedohConstants;
 import com.google.common.collect.Maps;
 import groovy.lang.GroovyClassLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
+import java.nio.file.Paths;
 import java.util.Map;
 
 public class MessageHandlerHelper {
@@ -17,7 +18,14 @@ public class MessageHandlerHelper {
 
         try {
             log.info(String.format("processing groovy script [%s]", scriptName));
-            Class c = new GroovyClassLoader().parseClass(new File("scripts/" + scriptName));
+            Class c =
+                    new GroovyClassLoader()
+                            .parseClass(
+                                    Paths.get(
+                                            System.getProperty(KeedohConstants.KEEDOH_CONFIG_DIR),
+                                            "scripts",
+                                            scriptName)
+                                            .toFile());
             MessageHandler handler = (MessageHandler) c.newInstance();
             handler.handleMsg(msg);
         } catch (Exception e) {

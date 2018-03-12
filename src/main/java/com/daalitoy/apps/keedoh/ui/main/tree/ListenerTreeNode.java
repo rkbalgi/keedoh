@@ -3,6 +3,7 @@ package com.daalitoy.apps.keedoh.ui.main.tree;
 import com.daalitoy.apps.keedoh.data.model.ListenerConfig;
 import com.daalitoy.apps.keedoh.data.model.Spec;
 import com.daalitoy.apps.keedoh.data.providers.ListenerConfigProvider;
+import com.daalitoy.apps.keedoh.guice.GuiceInjector;
 import com.daalitoy.apps.keedoh.net.server.Listeners;
 import com.daalitoy.apps.keedoh.ui.CanPopUp;
 import com.daalitoy.apps.keedoh.ui.dialog.ListenerConfigDialog;
@@ -58,8 +59,10 @@ public class ListenerTreeNode extends KeedohMutableTreeNode implements
             provider.update(config);
         } else if (arg0.getActionCommand().equals("__start__")) {
             // TODO::
-            Spec spec = new SpecSelectionDialog(
-                    KeedohMainFrame.getDesktopPane()).showDialog();
+            final SpecSelectionDialog dialog = new SpecSelectionDialog(
+                    KeedohMainFrame.getDesktopPane());
+            GuiceInjector.getInjector().injectMembers(dialog);
+            Spec spec = dialog.showDialog();
             if (spec != null) {
                 Listeners.register((ListenerConfig) getUserObject(), spec);
                 Listeners.start((ListenerConfig) getUserObject());

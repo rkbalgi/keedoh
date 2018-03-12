@@ -26,6 +26,7 @@ public class MessageData implements Cloneable {
     private Message msg;
     private List<Field> fields = Lists.newArrayList();
     private Map<Field, FieldData> fieldValueMap = Maps.newLinkedHashMap();
+    private Map<String, FieldData> fieldValueMap2 = Maps.newLinkedHashMap();
     private boolean request = true;
 
     private ReentrantLock lock = new ReentrantLock();
@@ -57,7 +58,7 @@ public class MessageData implements Cloneable {
         String normalizedTrace = trace.replaceAll("\\W+", "");
         System.out.println(normalizedTrace);
         ByteBuffer buffer = ByteBuffer.wrap(Hex.fromString(normalizedTrace));
-        MessageData msgData = new MessageData(msg, true);
+        MessageData msgData = new MessageData(msg, request);
         MessageSegment fragment = null;
         if (request) fragment = msg.getRequestSegment();
         else fragment = msg.getResponseSegment();
@@ -88,6 +89,10 @@ public class MessageData implements Cloneable {
                 for (Message lMsg : spec.getMessages()) {
 
                     if (lMsg.getRequestSegment().getMti().contains(mtiValue)) {
+                        return lMsg;
+                    }
+
+                    if (lMsg.getResponseSegment().getMti().contains(mtiValue)) {
                         return lMsg;
                     }
 
@@ -122,10 +127,8 @@ public class MessageData implements Cloneable {
     private void initMap() {
         List<Field> fields = null;
         if (request) {
-            System.out.println("req fields");
             fields = msg.getRequestSegment().getFields();
         } else {
-            System.out.println("resp fields");
             fields = msg.getResponseSegment().getFields();
         }
         for (Field f : fields) {
@@ -172,6 +175,7 @@ public class MessageData implements Cloneable {
                 fData.setListener(FieldStateChangeListener.bitmappedFieldStateListener());
                 break;
         }
+        fieldValueMap2.put(field.getFieldName(), fData);
         fieldValueMap.put(field, fData);
         for (Field f : field.getChildren()) {
             processField(f);
@@ -192,7 +196,7 @@ public class MessageData implements Cloneable {
     }
 
     public FieldData getFieldData(Field field) {
-        return (fieldValueMap.get(field));
+        return (fieldValueMap2.get(field.getFieldName()));
     }
 
     /**
@@ -286,6 +290,6 @@ public class MessageData implements Cloneable {
             Field f = bmp.getChild(sequence);
             msgData.fieldValueMap.get(f).setStringData(value);
             msgData.fieldValueMap.get(f).setSelected(true);
-        }
     }
+  }
 }

@@ -1,7 +1,9 @@
 package com.daalitoy.apps.keedoh.ui.dialog;
 
 import com.daalitoy.apps.keedoh.data.model.ConnectorConfig;
+import com.daalitoy.apps.keedoh.data.providers.ConnectorConfigProvider;
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
+import com.google.inject.Inject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +19,8 @@ public class ConnectorSelectionDialog extends JDialog implements
     private static final long serialVersionUID = 1L;
 
     private JComboBox cbConfigs = UIHelper.newComboBox();
+    @Inject
+    private ConnectorConfigProvider configProvider;
 
     private ConnectorConfig selectedConfig;
 
@@ -27,20 +31,20 @@ public class ConnectorSelectionDialog extends JDialog implements
                 + (parent.getHeight() / 2));
         setModal(true);
         setTitle("Select Connector Config");
-        initComponents();
+
         setSize(300, 100);
     }
 
     public ConnectorConfig showDialog() {
+        initComponents();
         setVisible(true);
         return (selectedConfig);
     }
 
     private void initComponents() {
 
-		/*for (ConnectorConfig config : ConnectorConfig.getInstances()) {
-			cbConfigs.addItem(config);
-		}*/
+
+        configProvider.allConfigs().forEach(cbConfigs::addItem);
 
         JPanel panel2 = new JPanel();
         panel2.add(UIHelper.newLabel("Config"));

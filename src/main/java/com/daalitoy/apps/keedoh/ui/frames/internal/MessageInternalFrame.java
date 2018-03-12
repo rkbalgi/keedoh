@@ -4,6 +4,7 @@ import com.daalitoy.apps.keedoh.data.common.FILE_TYPE;
 import com.daalitoy.apps.keedoh.data.model.ConnectorConfig;
 import com.daalitoy.apps.keedoh.data.model.Message;
 import com.daalitoy.apps.keedoh.data.transit.MessageData;
+import com.daalitoy.apps.keedoh.guice.GuiceInjector;
 import com.daalitoy.apps.keedoh.messaging.KeedohMessageTimeoutException;
 import com.daalitoy.apps.keedoh.messaging.MessagingManager;
 import com.daalitoy.apps.keedoh.ui.dialog.ConnectorSelectionDialog;
@@ -30,6 +31,7 @@ public class MessageInternalFrame extends JInternalFrame implements ActionListen
     private static final Logger log = LogManager.getLogger(MessageInternalFrame.class);
     /** */
     private static final long serialVersionUID = 1L;
+
     private Message msg;
     private JTable requestMsgDataTable = null;
     private JTable responseMsgDataTable = null;
@@ -123,7 +125,9 @@ public class MessageInternalFrame extends JInternalFrame implements ActionListen
     @Override
     public void actionPerformed(ActionEvent arg0) {
         if (arg0.getActionCommand().equals("__sock__")) {
-            ConnectorConfig config = new ConnectorSelectionDialog(this).showDialog();
+            final ConnectorSelectionDialog dialog = new ConnectorSelectionDialog(this);
+            GuiceInjector.getInjector().injectMembers(dialog);
+            ConnectorConfig config = dialog.showDialog();
             if (config != null) {
                 msg.setConnectorConfig(config);
             }
@@ -148,10 +152,15 @@ public class MessageInternalFrame extends JInternalFrame implements ActionListen
 
         } else if (arg0.getActionCommand().equals("__send__")) {
             try {
+                MessageData msgData = ((EditableMessageTableModel) requestMsgDataTable.getModel()).getMsgData();
+                if (msgData.getMessage().getConnectorConfig() == null) {
+                    UIHelper.showErrorDialog(this, "Please select a connector settings");
+                    return;
+                }
+
                 MessageData rpMsgData =
                         MessagingManager.getInstance()
-                                .dispatch(
-                                        ((EditableMessageTableModel) requestMsgDataTable.getModel()).getMsgData());
+                                .dispatch(msgData);
                 EditableMessageTableModel model = new EditableMessageTableModel(rpMsgData);
                 responseMsgDataTable.setModel(model);
                 model.fireTableDataChanged();

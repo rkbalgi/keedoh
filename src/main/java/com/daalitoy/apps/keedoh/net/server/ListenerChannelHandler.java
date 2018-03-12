@@ -19,10 +19,13 @@ public class ListenerChannelHandler extends ChannelDuplexHandler {
         log.error(cause);
     }
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        super.channelRead(ctx, msg);
 
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        //super.channelRead(ctx, msg);
+        //this.channelReadComplete();
+
+        System.out.println("data received");
         ListenerConfig config = Listeners.getConfigForChannel(ctx.channel());
         log.debug(config);
         ByteBuf buffer = (ByteBuf) msg;

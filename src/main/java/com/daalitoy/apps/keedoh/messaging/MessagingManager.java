@@ -8,6 +8,8 @@ import com.daalitoy.apps.keedoh.net.server.Listeners;
 import com.daalitoy.apps.keedoh.system.Properties;
 import com.daalitoy.apps.keedoh.ui.util.Hex;
 import com.google.common.collect.Maps;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,6 +42,7 @@ public class MessagingManager {
         Connectors.register(msgData.getMessage().getConnectorConfig(), msgData
                 .getMessage().getSpec());
         msgData.setProcessTime(new Date());
+
         Connectors.send(msgData);
         msgData.getLock().lock();
         try {
@@ -97,7 +100,7 @@ public class MessagingManager {
 
     public void handleIncomingServerMessage(Spec spec, byte[] data,
                                             String scriptName) {
-        log.debug(String.format("received msg for %s - %s", spec.getSpecName(),
+        log.debug(String.format("Received msg for %s - %s", spec.getSpecName(),
                 Hex.toString(data)));
         Message msg = MessageData.determineMessageType(spec, data);
         if (msg != null) {

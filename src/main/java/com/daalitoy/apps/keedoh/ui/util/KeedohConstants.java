@@ -7,4 +7,5 @@ public class KeedohConstants {
     public static final String RESPONSE_FRAGMENT = "Response Fragment";
 
 
+    public static final String KEEDOH_CONFIG_DIR = "keedoh.config.dir";
 }

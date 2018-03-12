@@ -2,6 +2,7 @@ package com.daalitoy.apps.keedoh.data.model;
 
 import com.daalitoy.apps.keedoh.data.common.ENCODING_TYPE;
 import com.daalitoy.apps.keedoh.data.common.FIELD_TYPE;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 import com.google.common.base.Predicates;
@@ -149,18 +150,17 @@ public abstract class Field extends Model {
         return (label);
     }
 
-    public void addChild(Field f) {
+    @JsonSetter
+    public void setChildren(List<Field> children) {
+        children.forEach(this::addChild);
+    }
+
+    private void addChild(Field f) {
         children.add(f);
         childrenBySequenceMap.put(f.getSequence(), f);
         Collections.sort(
                 children,
-                new Comparator<Field>() {
-
-                    @Override
-                    public int compare(Field field1, Field field2) {
-                        return (field1.getSequence() - field2.getSequence());
-                    }
-                });
+                (field1, field2) -> (field1.getSequence() - field2.getSequence()));
     }
 
     public Field getChild(int sequence) {

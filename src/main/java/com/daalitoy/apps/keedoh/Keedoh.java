@@ -28,6 +28,8 @@ public class Keedoh {
         if (Strings.isNullOrEmpty(userSpecifiedDir)) {
             // let's create a basic setup
             Path keedohDir = Paths.get(System.getProperty("user.home"), ".keedoh");
+            System.setProperty("keedoh.config.dir", keedohDir.toString());
+            log.info("Keedoh config directory - {}", System.getProperty("keedoh.config.dir"));
             if (keedohDir.toFile().exists()) {
                 log.info(
                         "A keedoh setup already exists in user home dir."

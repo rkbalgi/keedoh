@@ -21,8 +21,13 @@ public class ConnectorChannelHandler extends ChannelDuplexHandler {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        super.channelRead(ctx, msg);
+    public void channelReadComplete(ChannelHandlerContext ctx) {
+        System.out.println("read completed");
+    }
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        //super.channelRead(ctx, msg);
         ByteBuf buffer = (ByteBuf) msg;
         log.debug("msg received with readable bytes -" + buffer.readableBytes());
         ConnectorConfig config = Connectors.getConfigForChannel(ctx.channel());

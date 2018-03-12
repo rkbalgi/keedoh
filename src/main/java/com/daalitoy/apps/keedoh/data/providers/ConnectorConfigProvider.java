@@ -1,23 +1,33 @@
 package com.daalitoy.apps.keedoh.data.providers;
 
 import com.daalitoy.apps.keedoh.data.model.ConnectorConfig;
+import com.daalitoy.apps.keedoh.ui.util.KeedohConstants;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.google.common.collect.Lists;
-import com.google.common.io.Resources;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class ConnectorConfigProvider {
 
+    private static final Logger log = LogManager.getLogger(ConnectorConfig.class);
     private final List<ConnectorConfig> configs = Lists.newArrayList();
+    private final File configFile;
     private ObjectMapper mapper = new ObjectMapper();
 
     public ConnectorConfigProvider() {
         try {
-            ArrayNode connectors =
-                    (ArrayNode) mapper.readTree(Resources.getResource("connector-configs.json"));
+            configFile =
+                    Paths.get(System.getProperty(KeedohConstants.KEEDOH_CONFIG_DIR), "connector-configs.json")
+                            .toFile();
+            ArrayNode connectors = (ArrayNode) mapper.readTree(configFile);
             connectors
                     .elements()
                     .forEachRemaining(node -> configs.add(mapper.convertValue(node, ConnectorConfig.class)));
@@ -44,5 +54,10 @@ public class ConnectorConfigProvider {
     }
 
     private void write() {
+        try {
+            mapper.writer(new DefaultPrettyPrinter()).writeValue(configFile, configs);
+        } catch (IOException e) {
+            log.error("Unable to save connectors config", e);
+        }
     }
 }
