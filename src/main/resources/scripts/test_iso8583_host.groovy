@@ -17,9 +17,9 @@ class Iso8583MessageHandler implements MessageHandler {
             def amount = Integer.parseInt(msg.getValue(REQUEST, "Bitmap", 4))
             if (amount == 450) {
                 msg.setValue(RESPONSE, "Bitmap", 38, "ABC001")
-                msg.setValue(RESPONSE, "Bitmap", 39, "00")
+                msg.setValue(RESPONSE, "Bitmap", 39, "000")
             } else if (amount == 451) {
-                msg.setValue(RESPONSE, "Bitmap", 39, "10")
+                msg.setValue(RESPONSE, "Bitmap", 39, "100")
             }
         }
     }
