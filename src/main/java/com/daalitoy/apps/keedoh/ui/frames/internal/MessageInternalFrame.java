@@ -7,6 +7,7 @@ import com.daalitoy.apps.keedoh.data.transit.MessageData;
 import com.daalitoy.apps.keedoh.guice.GuiceInjector;
 import com.daalitoy.apps.keedoh.messaging.KeedohMessageTimeoutException;
 import com.daalitoy.apps.keedoh.messaging.MessagingManager;
+import com.daalitoy.apps.keedoh.net.KeedohNetException;
 import com.daalitoy.apps.keedoh.ui.dialog.ConnectorSelectionDialog;
 import com.daalitoy.apps.keedoh.ui.dialog.TraceInputDialog;
 import com.daalitoy.apps.keedoh.ui.dialog.TraceSelectionDialog;
@@ -57,7 +58,7 @@ public class MessageInternalFrame extends JInternalFrame implements ActionListen
         // toolbar
         JButton socketButton = UIHelper.newButton(null, "__sock__", this);
         socketButton.setIcon(IconFactory.getIcon("client.png"));
-        socketButton.setToolTipText("Socket Settings");
+        socketButton.setToolTipText("Connector Settings");
 
         // JButton listenerButton = UIHelper.newButton(null, "__list__", this);
         // listenerButton.setIcon(IconFactory.getIcon("server.png"));
@@ -79,11 +80,11 @@ public class MessageInternalFrame extends JInternalFrame implements ActionListen
         sendButton.setToolTipText("Fire Trace");
 
         JButton clearRequestButton = UIHelper.newButton(null, "__rq_clear__", this);
-        clearRequestButton.setIcon(IconFactory.getIcon("ui-text-field-clear.png"));
+        clearRequestButton.setIcon(IconFactory.getIcon("eraser.png"));
         clearRequestButton.setToolTipText("Clear Request");
 
         JButton clearResponseButton = UIHelper.newButton(null, "__rp_clear__", this);
-        clearResponseButton.setIcon(IconFactory.getIcon("ui-text-field-clear.png"));
+        clearResponseButton.setIcon(IconFactory.getIcon("eraser.png"));
         clearResponseButton.setToolTipText("Clear Response");
 
         toolbar.add(socketButton);
@@ -110,16 +111,39 @@ public class MessageInternalFrame extends JInternalFrame implements ActionListen
         responseMsgDataTable.setFont(UIHelper.STANDARD_FONT);
         responseMsgDataTable.getTableHeader().setFont(UIHelper.STANDARD_BOLD_FONT);
 
-        JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         pane.setDividerLocation(0.5);
-        pane.setLeftComponent(new JScrollPane(requestMsgDataTable));
-        pane.setRightComponent(new JScrollPane(responseMsgDataTable));
 
-        add(new JPanel(), BorderLayout.NORTH);
-        add(new JPanel(), BorderLayout.EAST);
-        add(new JPanel(), BorderLayout.WEST);
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BorderLayout());
+        JPanel tmpPanel = new JPanel();
+        tmpPanel.setBackground(Color.GREEN);
+        JLabel label = UIHelper.newLabel(" REQUEST  ");
+        label.setBackground(Color.GREEN);
+
+        tmpPanel.add(label);
+        topPanel.add(tmpPanel, BorderLayout.NORTH);
+        topPanel.add(new JScrollPane(requestMsgDataTable), BorderLayout.CENTER);
+
+        topPanel.setMinimumSize(new Dimension(200, 200));
+
+        pane.setTopComponent(topPanel);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BorderLayout());
+        tmpPanel = new JPanel();
+        label = UIHelper.newLabel(" RESPONSE  ");
+        tmpPanel.setBackground(Color.GREEN);
+        tmpPanel.add(label);
+        bottomPanel.add(tmpPanel, BorderLayout.NORTH);
+        bottomPanel.add(new JScrollPane(responseMsgDataTable), BorderLayout.CENTER);
+
+        pane.setBottomComponent(bottomPanel);
+        // add(new JPanel(), BorderLayout.NORTH);
+        /// add(new JPanel(), BorderLayout.EAST);
+        // add(new JPanel(), BorderLayout.WEST);
         add(pane, BorderLayout.CENTER);
-        add(new JPanel(), BorderLayout.SOUTH);
+        // add(new JPanel(), BorderLayout.SOUTH);
     }
 
     @Override
@@ -152,21 +176,22 @@ public class MessageInternalFrame extends JInternalFrame implements ActionListen
 
         } else if (arg0.getActionCommand().equals("__send__")) {
             try {
-                MessageData msgData = ((EditableMessageTableModel) requestMsgDataTable.getModel()).getMsgData();
+                MessageData msgData =
+                        ((EditableMessageTableModel) requestMsgDataTable.getModel()).getMsgData();
                 if (msgData.getMessage().getConnectorConfig() == null) {
                     UIHelper.showErrorDialog(this, "Please select a connector settings");
                     return;
                 }
 
-                MessageData rpMsgData =
-                        MessagingManager.getInstance()
-                                .dispatch(msgData);
+                MessageData rpMsgData = MessagingManager.getInstance().dispatch(msgData);
                 EditableMessageTableModel model = new EditableMessageTableModel(rpMsgData);
                 responseMsgDataTable.setModel(model);
                 model.fireTableDataChanged();
 
             } catch (KeedohMessageTimeoutException e) {
                 UIHelper.showErrorDialog(this, "Message Timed Out", e);
+            } catch (KeedohNetException e) {
+                UIHelper.showErrorDialog(this, "Network Error", e);
             }
         } else if (arg0.getActionCommand().equals("__rq_clear__")) {
             requestMsgDataTable.setModel(new EditableMessageTableModel(msg, true));

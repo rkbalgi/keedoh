@@ -13,6 +13,7 @@ Keedoh! - ATM/POS Simulator for Financial Messaging (ISO8583, AS2805 etc.)
 
 
 - Some icons by Yusuke Kamiyamane. All rights reserved. Licensed under a Creative Commons Attribution 3.0 License.
+(http://creativecommons.org/licenses/by/3.0/)
 - Powered by Apache and Google frameworks (Apache License)
 
 Developed By: Raghavendra Balgi (rkbalgi at google dot com)

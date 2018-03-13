@@ -69,7 +69,7 @@ public class Connectors {
             } catch (InterruptedException e) {
                 log.error(e);
             }
-            if (future.isDone()) {
+            if (future.isDone() && future.isSuccess()) {
                 log.debug("connected to " + config.getIp() + ":" + config.getPort());
                 configs.add(config);
                 connectorsMap.put(config, future.channel());

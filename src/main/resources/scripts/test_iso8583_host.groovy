@@ -20,7 +20,11 @@ class Iso8583MessageHandler implements MessageHandler {
                 msg.setValue(RESPONSE, "Bitmap", 39, "000")
             } else if (amount == 451) {
                 msg.setValue(RESPONSE, "Bitmap", 39, "100")
+            } else {
+                msg.setValue(RESPONSE, "Bitmap", 38, "XXX001")
+                msg.setValue(RESPONSE, "Bitmap", 39, "009")
             }
+
         }
     }
 }

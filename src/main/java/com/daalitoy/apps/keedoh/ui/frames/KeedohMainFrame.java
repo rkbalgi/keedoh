@@ -24,6 +24,7 @@ public class KeedohMainFrame extends JFrame implements ActionListener {
 
     /** */
     private static final long serialVersionUID = 1L;
+
     private static KeedohMainFrame instance = null;
     // private JTree msgSpecTree;
     private JDesktopPane desktopPane = new JDesktopPane();
@@ -140,6 +141,10 @@ public class KeedohMainFrame extends JFrame implements ActionListener {
 
         // add existing specs
         specsNode.addSpecs();
+
+        for (int i = 0; i < specsTree.getRowCount(); i++) {
+            specsTree.expandRow(i);
+        }
 
         return (new JScrollPane(specsTree));
     }

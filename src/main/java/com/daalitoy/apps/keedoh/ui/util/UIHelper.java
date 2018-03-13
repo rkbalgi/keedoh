@@ -53,7 +53,7 @@ public class UIHelper {
         return (button);
     }
 
-    public static Component newLabel(String msg) {
+    public static JLabel newLabel(String msg) {
         JLabel field = new JLabel(msg);
         field.setFont(STANDARD_FONT);
         return (field);
