@@ -30,13 +30,14 @@ import java.util.List;
 public class MessageInternalFrame extends JInternalFrame implements ActionListener {
 
     private static final Logger log = LogManager.getLogger(MessageInternalFrame.class);
-    /** */
+    /**
+     *
+     */
     private static final long serialVersionUID = 1L;
 
     private Message msg;
     private JTable requestMsgDataTable = null;
-    private JTable responseMsgDataTable = null;
-    private JToolBar toolbar = new JToolBar();
+    private final JToolBar toolbar = new JToolBar();
 
     public MessageInternalFrame(Message msg) {
         super("Specification: " + msg.getSpec().getSpecName() + " Message: " + msg.getMsgName());
@@ -45,6 +46,7 @@ public class MessageInternalFrame extends JInternalFrame implements ActionListen
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
+        setResizable(true);
         setSize(600, 400);
         setFrameIcon(UIHelper.getAppIcon());
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
@@ -83,13 +85,7 @@ public class MessageInternalFrame extends JInternalFrame implements ActionListen
         clearRequestButton.setIcon(IconFactory.getIcon("eraser.png"));
         clearRequestButton.setToolTipText("Clear Request");
 
-        JButton clearResponseButton = UIHelper.newButton(null, "__rp_clear__", this);
-        clearResponseButton.setIcon(IconFactory.getIcon("eraser.png"));
-        clearResponseButton.setToolTipText("Clear Response");
-
         toolbar.add(socketButton);
-        // toolbar.add(listenerButton);
-
         toolbar.add(importButton);
         toolbar.add(fromFileButton);
         toolbar.add(exportButton);
@@ -97,7 +93,6 @@ public class MessageInternalFrame extends JInternalFrame implements ActionListen
         toolbar.add(sendButton);
         toolbar.addSeparator();
         toolbar.add(clearRequestButton);
-        toolbar.add(clearResponseButton);
         toolbar.setRollover(true);
         add(toolbar, BorderLayout.PAGE_START);
 
@@ -106,13 +101,6 @@ public class MessageInternalFrame extends JInternalFrame implements ActionListen
         requestMsgDataTable.setFont(UIHelper.STANDARD_FONT);
         requestMsgDataTable.getTableHeader().setFont(UIHelper.STANDARD_BOLD_FONT);
 
-        responseMsgDataTable = new JTable();
-        responseMsgDataTable.setModel(new EditableMessageTableModel(msg, false));
-        responseMsgDataTable.setFont(UIHelper.STANDARD_FONT);
-        responseMsgDataTable.getTableHeader().setFont(UIHelper.STANDARD_BOLD_FONT);
-
-        JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        pane.setDividerLocation(0.5);
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BorderLayout());
@@ -127,90 +115,80 @@ public class MessageInternalFrame extends JInternalFrame implements ActionListen
 
         topPanel.setMinimumSize(new Dimension(200, 200));
 
-        pane.setTopComponent(topPanel);
+        add(topPanel, BorderLayout.CENTER);
 
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new BorderLayout());
-        tmpPanel = new JPanel();
-        label = UIHelper.newLabel(" RESPONSE  ");
-        tmpPanel.setBackground(Color.GREEN);
-        tmpPanel.add(label);
-        bottomPanel.add(tmpPanel, BorderLayout.NORTH);
-        bottomPanel.add(new JScrollPane(responseMsgDataTable), BorderLayout.CENTER);
-
-        pane.setBottomComponent(bottomPanel);
-        // add(new JPanel(), BorderLayout.NORTH);
-        /// add(new JPanel(), BorderLayout.EAST);
-        // add(new JPanel(), BorderLayout.WEST);
-        add(pane, BorderLayout.CENTER);
-        // add(new JPanel(), BorderLayout.SOUTH);
     }
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        if (arg0.getActionCommand().equals("__sock__")) {
-            final ConnectorSelectionDialog dialog = new ConnectorSelectionDialog(this);
-            GuiceInjector.getInjector().injectMembers(dialog);
-            ConnectorConfig config = dialog.showDialog();
-            if (config != null) {
-                msg.setConnectorConfig(config);
-            }
-        } else if (arg0.getActionCommand().equals("__import__")) {
-            String trace = new TraceInputDialog(this).getTrace();
-            if (trace != null) {
-                MessageData msgData = MessageData.build(msg, trace, true);
-                requestMsgDataTable.setModel(new EditableMessageTableModel(msgData));
-            }
-        } else if (arg0.getActionCommand().equals("__export__")) {
-            File file = UIHelper.getUserSelectedFile(this, FILE_TYPE.TEXT, false);
-            if (file != null) {
-                MessageData msgData =
-                        ((EditableMessageTableModel) requestMsgDataTable.getModel()).getMsgData();
-                try {
-                    byte[] assembledData = msgData.assemble(true);
-                    Files.write(Hex.toString(assembledData), file, Charsets.US_ASCII);
-                } catch (Exception e) {
-                    UIHelper.showErrorDialog(this, "Failed to Export Trace", e);
+        switch (arg0.getActionCommand()) {
+            case "__sock__":
+                final ConnectorSelectionDialog dialog = new ConnectorSelectionDialog(this);
+                GuiceInjector.getInjector().injectMembers(dialog);
+                ConnectorConfig config = dialog.showDialog();
+                if (config != null) {
+                    msg.setConnectorConfig(config);
                 }
-            }
-
-        } else if (arg0.getActionCommand().equals("__send__")) {
-            try {
-                MessageData msgData =
-                        ((EditableMessageTableModel) requestMsgDataTable.getModel()).getMsgData();
-                if (msgData.getMessage().getConnectorConfig() == null) {
-                    UIHelper.showErrorDialog(this, "Please select a connector settings");
-                    return;
+                break;
+            case "__import__":
+                String trace = new TraceInputDialog(this).getTrace();
+                if (trace != null) {
+                    MessageData msgData = MessageData.build(msg, trace, true);
+                    requestMsgDataTable.setModel(new EditableMessageTableModel(msgData));
                 }
-
-                MessageData rpMsgData = MessagingManager.getInstance().dispatch(msgData);
-                EditableMessageTableModel model = new EditableMessageTableModel(rpMsgData);
-                responseMsgDataTable.setModel(model);
-                model.fireTableDataChanged();
-
-            } catch (KeedohMessageTimeoutException e) {
-                UIHelper.showErrorDialog(this, "Message Timed Out", e);
-            } catch (KeedohNetException e) {
-                UIHelper.showErrorDialog(this, "Network Error", e);
-            }
-        } else if (arg0.getActionCommand().equals("__rq_clear__")) {
-            requestMsgDataTable.setModel(new EditableMessageTableModel(msg, true));
-        } else if (arg0.getActionCommand().equals("__rp_clear__")) {
-            responseMsgDataTable.setModel(new EditableMessageTableModel(msg, true));
-        } else if (arg0.getActionCommand().equals("__load_file__")) {
-            File file = UIHelper.getUserSelectedFile(this, FILE_TYPE.TEXT, true);
-            if (file != null) {
-                try {
-                    List<String> traces = Files.readLines(file, Charsets.US_ASCII);
-                    String tmp = new TraceSelectionDialog(this, traces).getTrace();
-                    if (tmp != null) {
-                        MessageData msgData = MessageData.build(msg, tmp, true);
-                        requestMsgDataTable.setModel(new EditableMessageTableModel(msgData));
+                break;
+            case "__export__": {
+                File file = UIHelper.getUserSelectedFile(this, FILE_TYPE.TEXT, false);
+                if (file != null) {
+                    MessageData msgData =
+                            ((EditableMessageTableModel) requestMsgDataTable.getModel()).getMsgData();
+                    try {
+                        byte[] assembledData = msgData.assemble(true);
+                        Files.write(Hex.toString(assembledData), file, Charsets.US_ASCII);
+                    } catch (Exception e) {
+                        UIHelper.showErrorDialog(this, "Failed to Export Trace", e);
                     }
-                } catch (Exception e) {
-                    log.error("Failed to load traces", e);
-                    UIHelper.showErrorDialog(this, "unable to load traces from file", e);
                 }
+
+                break;
+            }
+            case "__send__":
+                try {
+                    MessageData msgData =
+                            ((EditableMessageTableModel) requestMsgDataTable.getModel()).getMsgData();
+                    if (msgData.getMessage().getConnectorConfig() == null) {
+                        UIHelper.showErrorDialog(this, "Please select a connector settings");
+                        return;
+                    }
+
+                    MessageData rpMsgData = MessagingManager.getInstance().dispatch(msgData);
+                    new ResponseMsgDialog(this, rpMsgData).showDialog();
+
+                } catch (KeedohMessageTimeoutException e) {
+                    UIHelper.showErrorDialog(this, "Message Timed Out", e);
+                } catch (KeedohNetException e) {
+                    UIHelper.showErrorDialog(this, "Network Error", e);
+                }
+                break;
+            case "__rq_clear__":
+                requestMsgDataTable.setModel(new EditableMessageTableModel(msg, true));
+                break;
+            case "__load_file__": {
+                File file = UIHelper.getUserSelectedFile(this, FILE_TYPE.TEXT, true);
+                if (file != null) {
+                    try {
+                        List<String> traces = Files.readLines(file, Charsets.US_ASCII);
+                        String tmp = new TraceSelectionDialog(this, traces).getTrace();
+                        if (tmp != null) {
+                            MessageData msgData = MessageData.build(msg, tmp, true);
+                            requestMsgDataTable.setModel(new EditableMessageTableModel(msgData));
+                        }
+                    } catch (Exception e) {
+                        log.error("Failed to load traces", e);
+                        UIHelper.showErrorDialog(this, "unable to load traces from file", e);
+                    }
+                }
+                break;
             }
         }
     }

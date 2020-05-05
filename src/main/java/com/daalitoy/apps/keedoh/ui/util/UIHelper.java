@@ -14,8 +14,8 @@ public class UIHelper {
 
     private static final ImageIcon IMAGE_ICON =
             new ImageIcon(ClassLoader.getSystemResource("images/keedoh_node.gif"));
-    public static Font STANDARD_FONT = new Font("calibri", Font.PLAIN, 11);
-    public static Font STANDARD_BOLD_FONT = new Font("calibri", Font.BOLD, 11);
+    public static Font STANDARD_FONT = new Font("calibri", Font.PLAIN, 12);
+    public static Font STANDARD_BOLD_FONT = new Font("calibri", Font.BOLD, 12);
 
     public static JMenuItem newJMenuItem(
             String label, int keyCode, ActionListener actionListener, String actionCommand) {

@@ -1,4 +1,4 @@
-Keedoh! - ATM/POS Simulator for Financial Messaging (ISO8583, AS2805 etc.)
+Keedoh! - ATM/POS Simulator for Financial Messaging (ISO8583 etc.)
 
                  .\-/. 
              /\  () ()  /\ 
@@ -16,4 +16,4 @@ Keedoh! - ATM/POS Simulator for Financial Messaging (ISO8583, AS2805 etc.)
 (http://creativecommons.org/licenses/by/3.0/)
 - Powered by Apache and Google frameworks (Apache License)
 
-Developed By: Raghavendra Balgi (rkbalgi at google dot com)
+Developed By: Raghavendra Balgi (rkbalgi@gmail.com)
