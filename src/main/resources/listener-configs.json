@@ -1,0 +1,16 @@
+[
+  {
+    "name": "listener-config-1",
+    "ip": "127.0.0.1",
+    "port": 9876,
+    "mli": "MLI_2E",
+    "processorScript": "test_iso8583_host.groovy"
+  },
+  {
+    "name": "listener-config-2",
+    "ip": "localhost",
+    "port": 1,
+    "mli": "MLI_2I",
+    "processorScript": "test_iso8583_host.groovy"
+  }
+]

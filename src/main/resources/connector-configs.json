@@ -1,0 +1,16 @@
+[
+  {
+    "name": "connector-config-1",
+    "ip": "127.0.0.1",
+    "port": 9876,
+    "mli": "MLI_2E",
+    "processorScript": "abc"
+  },
+  {
+    "name": "connector-config-2",
+    "ip": "localhost",
+    "port": 1,
+    "mli": "MLI_2I",
+    "processorScript": "def"
+  }
+]

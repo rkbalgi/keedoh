@@ -1,0 +1,19 @@
+Keedoh! - ATM/POS Simulator for Financial Messaging (ISO8583 etc.)
+
+                 .\-/. 
+             /\  () ()  /\ 
+            /  \ /~-~\ /  \ 
+                y  Y  V 
+          ,-^-./   |   \,-^-.   
+         /    {    |    }    \    
+               \   |   / 
+               /\  A  /\ 
+              /  \/ \/  \ 
+             /           \  
+
+
+- Some icons by Yusuke Kamiyamane. All rights reserved. Licensed under a Creative Commons Attribution 3.0 License.
+(http://creativecommons.org/licenses/by/3.0/)
+- Powered by Apache and Google frameworks (Apache License)
+
+Developed By: Raghavendra Balgi (rkbalgi@gmail.com)
