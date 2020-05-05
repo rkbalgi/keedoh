@@ -1,7 +1,7 @@
 # keedoh
 Keedoh - An ISO8583 simulator built with Java
 
-![Keedoh Main Screen](https://rkbalgi.github.io/keedoh_mai.png)
+![Keedoh Main Screen](https://rkbalgi.github.io/keedoh_main.png)
 
 
 Keedoh is a simple ISO8583 simulator built with Java. It has a ISO8583 client which can generate message 
