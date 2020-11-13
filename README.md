@@ -9,6 +9,7 @@ as well as a server that can be programmed to respond to client messages using a
 
 Here are some introductory slides https://drive.google.com/open?id=1Hl2f84_p9C3Aftz9-MZEKGAMep5W0MI7sxT9cwZsiGQ
 
+__Also checkout [isosim](https://github.com/rkbalgi/isosim), a web based ISO8583 simulator built with Go!__
 
 ## Quick Run
 ### Start Listener
