@@ -6,6 +6,7 @@ import com.daalitoy.apps.keedoh.ui.frames.KeedohMainFrame;
 import com.daalitoy.apps.keedoh.ui.frames.internal.MessageInternalFrame;
 import com.daalitoy.apps.keedoh.ui.tree.nodes.KeedohMutableTreeNode;
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
+import io.github.rkbalgi.iso4k.MessageSegment;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -18,10 +19,10 @@ public class SpecMessageTreeNode extends KeedohMutableTreeNode implements CanPop
     private static final long serialVersionUID = 1L;
 
     private JPopupMenu popupMenu = new JPopupMenu();
-    private Message msg;
+    private MessageSegment msg;
 
-    public SpecMessageTreeNode(Message msg) {
-        super(msg.getMsgName());
+    public SpecMessageTreeNode(MessageSegment msg) {
+        super(msg.getName());
         this.msg = msg;
         setupPopupMenu();
     }
@@ -42,7 +43,7 @@ public class SpecMessageTreeNode extends KeedohMutableTreeNode implements CanPop
     public void actionPerformed(ActionEvent arg0) {
         if (arg0.getActionCommand().equals("__open__")) {
             JInternalFrame frame = new MessageInternalFrame(msg);
-            log.debug(() -> msg.dumpToString());
+            //log.debug(() -> msg.dumpToString());
             KeedohMainFrame.getFrame().loadIntoDesktopPane(frame);
         }
     }

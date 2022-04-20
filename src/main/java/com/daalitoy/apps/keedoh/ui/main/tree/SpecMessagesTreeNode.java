@@ -1,10 +1,12 @@
 package com.daalitoy.apps.keedoh.ui.main.tree;
 
 import com.daalitoy.apps.keedoh.data.model.Message;
-import com.daalitoy.apps.keedoh.data.model.Spec;
+
 import com.daalitoy.apps.keedoh.system.SpecManager;
 import com.daalitoy.apps.keedoh.ui.tree.nodes.KeedohMutableTreeNode;
 import com.google.inject.Inject;
+import io.github.rkbalgi.iso4k.MessageSegment;
+import io.github.rkbalgi.iso4k.Spec;
 
 import java.util.List;
 
@@ -24,8 +26,8 @@ public class SpecMessagesTreeNode extends KeedohMutableTreeNode {
     }
 
     public void init() {
-        List<Message> messages = spec.getMessages();
-        for (Message msg : messages) {
+        List<MessageSegment> messages = spec.messages();
+        for (MessageSegment msg : messages) {
             SpecMessageTreeNode msgNode = new SpecMessageTreeNode(msg);
             addToSelf(msgNode);
             msgNode.init();

@@ -40,29 +40,6 @@ public class Keedoh {
                     Path baseDir = Files.createDirectory(keedohDir);
                     Files.createDirectories(baseDir.resolve("scripts"));
                     Files.createDirectories(baseDir.resolve("specs"));
-                    Files.copy(
-                            Resources.getResource("keedoh.properties").openStream(),
-                            baseDir.resolve("keedoh.properties"),
-                            StandardCopyOption.REPLACE_EXISTING);
-                    Files.copy(
-                            Resources.getResource("specs/iso8583-sample.json").openStream(),
-                            baseDir.resolve("specs").resolve("iso8583-sample.json"));
-                    Files.copy(
-                            Resources.getResource("scripts/test_iso8583_host.groovy").openStream(),
-                            baseDir.resolve("scripts/test_iso8583_host.groovy"));
-
-                    Files.copy(
-                            Resources.getResource("keedoh-specs.json").openStream(),
-                            baseDir.resolve("keedoh-specs.json"));
-                    Files.copy(
-                            Resources.getResource("connector-configs.json").openStream(),
-                            baseDir.resolve("connector-configs.json"));
-                    Files.copy(
-                            Resources.getResource("listener-configs.json").openStream(),
-                            baseDir.resolve("listener-configs.json"));
-
-                    // lets build the structure and copy sample files
-                    // Path path = Files.createFile(Paths.get(keedohDir.toString(), "keedoh.properties"));
 
                 } catch (IOException e) {
                     log.error("Failed to initialize Keedoh", e);
@@ -72,6 +49,32 @@ public class Keedoh {
                         log.error("cleanup failed", e);
                     }
                 }
+            }
+
+            try {
+                Files.copy(
+                        Resources.getResource("keedoh.properties").openStream(),
+                        keedohDir.resolve("keedoh.properties"),
+                        StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(
+                        Resources.getResource("specs/specs.yml").openStream(),
+                        keedohDir.resolve("specs").resolve("specs/specs.yml"));
+                Files.copy(
+                        Resources.getResource("specs/sample_spec.yml").openStream(),
+                        keedohDir.resolve("specs").resolve("specs/sample_spec.yml"));
+
+                Files.copy(
+                        Resources.getResource("scripts/test_iso8583_host.groovy").openStream(),
+                        keedohDir.resolve("scripts/test_iso8583_host.groovy"));
+
+                Files.copy(
+                        Resources.getResource("connector-configs.json").openStream(),
+                        keedohDir.resolve("connector-configs.json"));
+                Files.copy(
+                        Resources.getResource("listener-configs.json").openStream(),
+                        keedohDir.resolve("listener-configs.json"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
 
             System.setProperty("keedoh_config_dir", keedohDir.toString());

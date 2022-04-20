@@ -1,9 +1,10 @@
 package com.daalitoy.apps.keedoh.ui.dialog;
 
-import com.daalitoy.apps.keedoh.data.model.Spec;
+
 import com.daalitoy.apps.keedoh.system.SpecManager;
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
 import com.google.inject.Inject;
+import io.github.rkbalgi.iso4k.Spec;
 
 import javax.swing.*;
 import java.awt.*;

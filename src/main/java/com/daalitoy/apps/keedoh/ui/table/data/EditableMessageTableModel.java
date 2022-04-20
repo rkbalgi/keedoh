@@ -1,10 +1,16 @@
 package com.daalitoy.apps.keedoh.ui.table.data;
 
 import com.daalitoy.apps.keedoh.data.model.Field;
-import com.daalitoy.apps.keedoh.data.model.Message;
+
 import com.daalitoy.apps.keedoh.data.transit.MessageData;
+import com.google.common.collect.Lists;
+import io.github.rkbalgi.iso4k.IsoField;
+import io.github.rkbalgi.iso4k.Message;
+import io.github.rkbalgi.iso4k.Transaction;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class EditableMessageTableModel extends AbstractTableModel {
 
@@ -13,17 +19,16 @@ public class EditableMessageTableModel extends AbstractTableModel {
      */
     private static final long serialVersionUID = 1L;
     private Message msg;
-    private MessageData msgData;
+    private Transaction transaction;
 
-    public EditableMessageTableModel(Message msg, boolean request) {
+    public EditableMessageTableModel(Transaction transaction, boolean request) {
         super();
-        this.msg = msg;
-        msgData = new MessageData(msg, request);
+        this.transaction = transaction;
     }
 
-    public EditableMessageTableModel(MessageData msgData) {
+    public EditableMessageTableModel(Message msg) {
         super();
-        this.msgData = msgData;
+        this.msg = msg;
     }
 
     public int getColumnCount() {
@@ -45,7 +50,34 @@ public class EditableMessageTableModel extends AbstractTableModel {
     }
 
     public int getRowCount() {
-        return (msgData.getFieldCount());
+
+        if (transaction != null) {
+            return flatSize(transaction.request());
+        } else {
+            return (flatSize(msg));
+        }
+    }
+
+    private int flatSize(Message msg) {
+
+        ArrayList<Object> fieldsByRow = Lists.newArrayList();
+        msg.getMessageSegment().fields().forEach(f -> {
+            fieldsByRow.add(f);
+            if (f.hasChildren()) {
+                addChildren(f, fieldsByRow);
+            }
+
+        });
+        return fieldsByRow.size();
+    }
+
+    private void addChildren(IsoField f, ArrayList<Object> fieldsByRow) {
+        Arrays.stream(f.getChildren()).iterator().forEachRemaining(e -> {
+            fieldsByRow.add(e);
+            if (e.hasChildren()) {
+                addChildren(e, fieldsByRow);
+            }
+        });
     }
 
     public boolean isCellEditable(int row, int col) {

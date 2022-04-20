@@ -2,7 +2,7 @@ package com.daalitoy.apps.keedoh.ui.frames.internal;
 
 import com.daalitoy.apps.keedoh.data.common.FILE_TYPE;
 import com.daalitoy.apps.keedoh.data.model.ConnectorConfig;
-import com.daalitoy.apps.keedoh.data.model.Message;
+
 import com.daalitoy.apps.keedoh.data.transit.MessageData;
 import com.daalitoy.apps.keedoh.guice.GuiceInjector;
 import com.daalitoy.apps.keedoh.messaging.KeedohMessageTimeoutException;
@@ -17,6 +17,9 @@ import com.daalitoy.apps.keedoh.ui.util.IconFactory;
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+import io.github.rkbalgi.iso4k.Message;
+import io.github.rkbalgi.iso4k.MessageSegment;
+import io.github.rkbalgi.iso4k.Transaction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,12 +38,12 @@ public class MessageInternalFrame extends JInternalFrame implements ActionListen
      */
     private static final long serialVersionUID = 1L;
 
-    private Message msg;
+    private io.github.rkbalgi.iso4k.MessageSegment msg;
     private JTable requestMsgDataTable = null;
     private final JToolBar toolbar = new JToolBar();
 
-    public MessageInternalFrame(Message msg) {
-        super("Specification: " + msg.getSpec().getSpecName() + " Message: " + msg.getMsgName());
+    public MessageInternalFrame(MessageSegment msg) {
+        super("Specification: " + msg.spec().getName()+ " Message: " + msg.getName());
         this.msg = msg;
         initComponents();
         setClosable(true);
@@ -96,8 +99,9 @@ public class MessageInternalFrame extends JInternalFrame implements ActionListen
         toolbar.setRollover(true);
         add(toolbar, BorderLayout.PAGE_START);
 
+        Transaction transaction= new Transaction(new Message(msg));
         requestMsgDataTable = new JTable();
-        requestMsgDataTable.setModel(new EditableMessageTableModel(msg, true));
+        requestMsgDataTable.setModel(new EditableMessageTableModel(transaction, true));
         requestMsgDataTable.setFont(UIHelper.STANDARD_FONT);
         requestMsgDataTable.getTableHeader().setFont(UIHelper.STANDARD_BOLD_FONT);
 

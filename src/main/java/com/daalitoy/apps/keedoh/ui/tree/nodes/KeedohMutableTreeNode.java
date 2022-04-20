@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.util.Enumeration;
 
@@ -132,10 +133,10 @@ public class KeedohMutableTreeNode extends DefaultMutableTreeNode {
         DefaultTreeModel model = (DefaultTreeModel) getOwningTree().getModel();
         MessageSpecFieldDictTreeNode rootNode = (MessageSpecFieldDictTreeNode) model
                 .getRoot();
-        Enumeration<KeedohMutableTreeNode> enumeration = rootNode
+        Enumeration<TreeNode> enumeration = rootNode
                 .breadthFirstEnumeration();
         while (enumeration.hasMoreElements()) {
-            KeedohMutableTreeNode tmpNode = enumeration.nextElement();
+            KeedohMutableTreeNode tmpNode = (KeedohMutableTreeNode) enumeration.nextElement();
             if (tmpNode instanceof FieldTreeNode) {
                 if (((FieldTreeNode) tmpNode).getField() == field) {
                     node = (FieldTreeNode) tmpNode;

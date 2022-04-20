@@ -1,11 +1,12 @@
 package com.daalitoy.apps.keedoh.ui.main.tree;
 
-import com.daalitoy.apps.keedoh.data.model.Spec;
+
 import com.daalitoy.apps.keedoh.ui.CanPopUp;
 import com.daalitoy.apps.keedoh.ui.frames.KeedohMainFrame;
 import com.daalitoy.apps.keedoh.ui.frames.internal.NewMessageSpecificationInternalFrame;
 import com.daalitoy.apps.keedoh.ui.tree.nodes.KeedohMutableTreeNode;
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
+import io.github.rkbalgi.iso4k.Spec;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -23,7 +24,7 @@ public class SpecTreeNode extends KeedohMutableTreeNode implements CanPopUp,
     private JPopupMenu popup = new JPopupMenu();
 
     public SpecTreeNode(Spec spec) {
-        super(spec.getSpecName());
+        super(spec.getName());
         this.spec = spec;
         setupPopupMenu();
     }

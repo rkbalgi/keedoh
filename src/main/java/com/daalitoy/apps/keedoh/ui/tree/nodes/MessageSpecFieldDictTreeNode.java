@@ -7,6 +7,7 @@ import com.daalitoy.apps.keedoh.ui.dialog.FieldDialog;
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
 
 import javax.swing.*;
+import javax.swing.tree.TreeNode;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -64,13 +65,13 @@ public class MessageSpecFieldDictTreeNode extends KeedohMutableTreeNode
                 field.setSpec(spec);
                 // if there is a parent, you should add this to the parent
                 if (field.getParent() != null) {
-                    Enumeration<FieldTreeNode> e = children();
+                    Enumeration<TreeNode> e = children();
                     while (e.hasMoreElements()) {
-                        FieldTreeNode node = e.nextElement();
-                        if (field.getParent() == node.getField()) {
-                            // we have a match
-                            node.addToSelf(new FieldTreeNode(field));
-                        }
+//                        FieldTreeNode node = e.nextElement();
+//                        if (field.getParent() == node.getField()) {
+//                            // we have a match
+//                            node.addToSelf(new FieldTreeNode(field));
+//                        }
                     }
                 } else {
                     addToSelf(new FieldTreeNode(field));

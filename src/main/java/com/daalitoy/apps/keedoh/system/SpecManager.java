@@ -1,6 +1,8 @@
 package com.daalitoy.apps.keedoh.system;
 
-import com.daalitoy.apps.keedoh.data.model.Spec;
+
+
+import io.github.rkbalgi.iso4k.Spec;
 
 import java.util.List;
 

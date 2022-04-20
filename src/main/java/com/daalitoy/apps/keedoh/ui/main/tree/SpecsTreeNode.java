@@ -1,10 +1,11 @@
 package com.daalitoy.apps.keedoh.ui.main.tree;
 
-import com.daalitoy.apps.keedoh.data.model.Spec;
+
 import com.daalitoy.apps.keedoh.system.SpecManager;
 import com.daalitoy.apps.keedoh.ui.dialog.SimpleTextInputDialog;
 import com.daalitoy.apps.keedoh.ui.tree.nodes.KeedohMutableTreeNode;
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
+import io.github.rkbalgi.iso4k.Spec;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
