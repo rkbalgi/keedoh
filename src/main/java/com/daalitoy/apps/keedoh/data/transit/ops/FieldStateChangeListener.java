@@ -8,28 +8,27 @@ import com.google.common.base.Predicates;
 
 public abstract class FieldStateChangeListener {
 
-    protected static Predicate<Object> BITMAP_CLASS_CHECK = Predicates
-            .instanceOf(BitmappedField.class);
+  protected static Predicate<Object> BITMAP_CLASS_CHECK =
+      Predicates.instanceOf(BitmappedField.class);
 
-    public static FieldStateChangeListener fixedFieldStateListener() {
-        return (FixedFieldStateChangeListener.getInstance());
-    }
+  public static FieldStateChangeListener fixedFieldStateListener() {
+    return (FixedFieldStateChangeListener.getInstance());
+  }
 
-    public static FieldStateChangeListener terminatedFieldStateListener() {
-        return (TerminatedFieldStateChangeListener.getInstance());
-    }
+  public static FieldStateChangeListener terminatedFieldStateListener() {
+    return (TerminatedFieldStateChangeListener.getInstance());
+  }
 
-    public static FieldStateChangeListener variableFieldStateListener() {
-        return (VariableFieldStateChangeListener.getInstance());
-    }
+  public static FieldStateChangeListener variableFieldStateListener() {
+    return (VariableFieldStateChangeListener.getInstance());
+  }
 
-    public static FieldStateChangeListener bitmappedFieldStateListener() {
-        return (BitmappedFieldStateChangeListener.getInstance());
-    }
+  public static FieldStateChangeListener bitmappedFieldStateListener() {
+    return (BitmappedFieldStateChangeListener.getInstance());
+  }
 
-    public abstract void fieldSelectionChanged(MessageData msgData,
-                                               FieldData fieldData, boolean selected);
+  public abstract void fieldSelectionChanged(
+      MessageData msgData, FieldData fieldData, boolean selected);
 
-    public abstract void fieldDataChanged(FieldData fieldData,
-                                          boolean stringFlavour);
+  public abstract void fieldDataChanged(FieldData fieldData, boolean stringFlavour);
 }

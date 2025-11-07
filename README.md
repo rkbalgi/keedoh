@@ -11,7 +11,7 @@ Here are some introductory slides https://drive.google.com/open?id=1Hl2f84_p9C3A
 
 __Also checkout [isosim](https://github.com/rkbalgi/isosim), a web based ISO8583 simulator built with Go!__
 
-## Quick Run
+## Quick Run (from IDE)
 ### Start Listener
 1. Right click on listener-config-1 (under listeners)
 2. Click Start (This will start a listener on port 127.0.0.1:9876), using MLI 2E and a host script - test_iso8583_host.groovy
@@ -22,6 +22,20 @@ __Also checkout [isosim](https://github.com/rkbalgi/isosim), a web based ISO8583
 3. Click __Import Trace__ button on toolbar and provide this as the trace 31313030702400000020020031343438363235323534323432333332303034303030303030303030303030343530313233343537f2f3f0f40011c1c2c3f0f1f9f2f8f3f7f3f0f80000000000000000
 4. Now Click the __Fire Trace__ button and you should now see the response in a new dialog!
 
+# Building and Running
+```shell
+rbalgi@Raghavendras-iMac keedoh % ./gradlew build                               
+Calculating task graph as configuration cache cannot be reused because file 'build.gradle.kts' has changed.
+
+BUILD SUCCESSFUL in 12s
+12 actionable tasks: 4 executed, 8 up-to-date
+Configuration cache entry stored.
+rbalgi@Raghavendras-iMac keedoh % java -jar ./build/libs/keedoh-1.0-SNAPSHOT-all.jar
+```
+OR
+```shell
+rbalgi@Raghavendras-iMac keedoh % ./gradlew run
+```
 ## Notes
 * The host script is a simple groovy script that produces different results (action codes/approval code) based on the Amount field
 * You can edit this script under __src\main\resources\scripts\test_iso8583_host.groovy__ or you can write your own!

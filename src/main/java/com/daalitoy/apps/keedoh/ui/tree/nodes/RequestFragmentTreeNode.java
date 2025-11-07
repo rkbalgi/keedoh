@@ -6,35 +6,34 @@ import com.daalitoy.apps.keedoh.ui.util.KeedohConstants;
 
 public class RequestFragmentTreeNode extends KeedohMutableTreeNode {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-    private MessageSegment fragment;
+  /**
+   *
+   */
+  private static final long serialVersionUID = 1L;
 
-    public RequestFragmentTreeNode(MessageSegment fragment) {
-        this.fragment = fragment;
+  private MessageSegment fragment;
+
+  public RequestFragmentTreeNode(MessageSegment fragment) {
+    this.fragment = fragment;
+  }
+
+  public void init() {
+    for (Field field : fragment.getFields()) {
+      MessageFieldTreeNode node = new MessageFieldTreeNode(fragment, field);
+      addToSelf(node);
+      node.init();
     }
+  }
 
-    public void init() {
-        for (Field field : fragment.getFields()) {
-            MessageFieldTreeNode node = new MessageFieldTreeNode(fragment,
-                    field);
-            addToSelf(node);
-            node.init();
-        }
-    }
+  public MessageSegment getFragment() {
+    return (fragment);
+  }
 
-    public MessageSegment getFragment() {
-        return (fragment);
-    }
+  public boolean contains(Field field) {
+    return fragment.contains(field);
+  }
 
-    public boolean contains(Field field) {
-        return fragment.contains(field);
-    }
-
-    public String toString() {
-        return (KeedohConstants.REQUEST_FRAGMENT);
-    }
-
+  public String toString() {
+    return (KeedohConstants.REQUEST_FRAGMENT);
+  }
 }

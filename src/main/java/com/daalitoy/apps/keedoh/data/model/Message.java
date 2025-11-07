@@ -2,64 +2,64 @@ package com.daalitoy.apps.keedoh.data.model;
 
 public class Message extends Model {
 
-    private int msgId = -1;
-    private String msgName;
-    private MessageSegment requestSegment;
-    private MessageSegment responseSegment;
-    private Spec spec;
-    private String mtiValues;
+  private int msgId = -1;
+  private String msgName;
+  private MessageSegment requestSegment;
+  private MessageSegment responseSegment;
+  private Spec spec;
+  private String mtiValues;
 
-    private ConnectorConfig connectorConfig;
-    // private String[] requestMti;
-    // private String[] responseMti;
+  private ConnectorConfig connectorConfig;
 
-    public Message() {
-    }
+  // private String[] requestMti;
+  // private String[] responseMti;
 
-    public Message(Spec spec, String msgName) {
-        this.spec = spec;
-        this.msgName = msgName;
-    }
+  public Message() {}
 
-    public int getMsgId() {
-        return msgId;
-    }
+  public Message(Spec spec, String msgName) {
+    this.spec = spec;
+    this.msgName = msgName;
+  }
 
-    public void setMsgId(int msgId) {
-        this.msgId = msgId;
-    }
+  public int getMsgId() {
+    return msgId;
+  }
 
-    public String getMsgName() {
-        return msgName;
-    }
+  public void setMsgId(int msgId) {
+    this.msgId = msgId;
+  }
 
-    public void setMsgName(String msgName) {
-        this.msgName = msgName;
-    }
+  public String getMsgName() {
+    return msgName;
+  }
 
-    public MessageSegment getRequestSegment() {
-        return requestSegment;
-    }
+  public void setMsgName(String msgName) {
+    this.msgName = msgName;
+  }
 
-    public void setRequestSegment(MessageSegment requestSegment) {
-        this.requestSegment = requestSegment;
-    }
+  public MessageSegment getRequestSegment() {
+    return requestSegment;
+  }
 
-    public MessageSegment getResponseSegment() {
-        return responseSegment;
-    }
+  public void setRequestSegment(MessageSegment requestSegment) {
+    this.requestSegment = requestSegment;
+  }
 
-    public void setResponseSegment(MessageSegment responseSegment) {
-        this.responseSegment = responseSegment;
-    }
+  public MessageSegment getResponseSegment() {
+    return responseSegment;
+  }
 
-    public Spec getSpec() {
-        return spec;
-    }
+  public void setResponseSegment(MessageSegment responseSegment) {
+    this.responseSegment = responseSegment;
+  }
 
-    public void setSpec(Spec spec) {
-        this.spec = spec;
-    }
+  public Spec getSpec() {
+    return spec;
+  }
+
+  public void setSpec(Spec spec) {
+    this.spec = spec;
+  }
 
   /*public void setMtiValues(String mtiValues) {
   	this.mtiValues = mtiValues;
@@ -76,30 +76,30 @@ public class Message extends Model {
   	return responseMti;
   }*/
 
-    public ConnectorConfig getConnectorConfig() {
-        return connectorConfig;
-    }
+  public ConnectorConfig getConnectorConfig() {
+    return connectorConfig;
+  }
 
-    public void setConnectorConfig(ConnectorConfig connectorConfig) {
-        this.connectorConfig = connectorConfig;
-    }
+  public void setConnectorConfig(ConnectorConfig connectorConfig) {
+    this.connectorConfig = connectorConfig;
+  }
 
-    public String dumpToString() {
+  public String dumpToString() {
 
-        StringBuilder builder = new StringBuilder();
-        builder.append("msg: " + getMsgName() + " - request \n");
-        getRequestSegment().getFields().forEach(f -> builder.append(f.dumpToString()));
-        builder.append("msg: " + getMsgName() + " - response \n");
-        getResponseSegment().getFields().forEach(f -> builder.append(f.dumpToString()));
+    StringBuilder builder = new StringBuilder();
+    builder.append("msg: " + getMsgName() + " - request \n");
+    getRequestSegment().getFields().forEach(f -> builder.append(f.dumpToString()));
+    builder.append("msg: " + getMsgName() + " - response \n");
+    getResponseSegment().getFields().forEach(f -> builder.append(f.dumpToString()));
 
-        return builder.toString();
-    }
+    return builder.toString();
+  }
 
-    /**
-     * save the msg to db
-     *
-     * @param msg
-     */
+  /**
+   * save the msg to db
+   *
+   * @param msg
+   */
   /*
   public static void save(Message msg) {
 
@@ -170,11 +170,11 @@ public class Message extends Model {
   }
 
   */
-    /**
-     * delete the message from db
-     *
-     * @param msg
-     */
+  /**
+   * delete the message from db
+   *
+   * @param msg
+   */
   /*
   public static void delete(Message msg) {
   	if (msg.getMsgId() == -1) {

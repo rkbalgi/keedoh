@@ -9,9 +9,7 @@ import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,150 +24,147 @@ import java.util.Map;
 })*/
 public abstract class Field extends Model {
 
-    /*private static String FIXED_FLD_UPDATE_QUERY = "update fld set fld_name=?,fld_size=?,fld_encoding=?,fld_seq=?,fld_parent_id=?,is_mti=?,is_flight_key=? where fld_id=? and msg_spec_id=?";
-        private static String VARIABLE_FLD_UPDATE_QUERY = "update fld set fld_name=?,fld_len_ind_size=?,fld_encoding=?,fld_len_ind_encoding=?,fld_seq=?,fld_parent_id=?,is_mti=?,is_flight_key=? where fld_id=? and msg_spec_id=?";
-        private static String TERMINATED_FLD_UPDATE_QUERY = "update fld set fld_name=?,fld_encoding=?,terminator_char=?,fld_seq=?,fld_parent_id=?,is_mti=?,is_flight_key=? where fld_id=? and msg_spec_id=?";
-    */
-    protected int fieldId;
-    protected String fieldName;
-    protected FIELD_TYPE fieldType;
-    protected int length;
-    protected ENCODING_TYPE encodingType;
-    protected boolean isMti;
-    protected boolean isFlightKey;
-    protected Field parent;
-    protected int sequence;
+  /*private static String FIXED_FLD_UPDATE_QUERY = "update fld set fld_name=?,fld_size=?,fld_encoding=?,fld_seq=?,fld_parent_id=?,is_mti=?,is_flight_key=? where fld_id=? and msg_spec_id=?";
+      private static String VARIABLE_FLD_UPDATE_QUERY = "update fld set fld_name=?,fld_len_ind_size=?,fld_encoding=?,fld_len_ind_encoding=?,fld_seq=?,fld_parent_id=?,is_mti=?,is_flight_key=? where fld_id=? and msg_spec_id=?";
+      private static String TERMINATED_FLD_UPDATE_QUERY = "update fld set fld_name=?,fld_encoding=?,terminator_char=?,fld_seq=?,fld_parent_id=?,is_mti=?,is_flight_key=? where fld_id=? and msg_spec_id=?";
+  */
+  protected int fieldId;
+  protected String fieldName;
+  protected FIELD_TYPE fieldType;
+  protected int length;
+  protected ENCODING_TYPE encodingType;
+  protected boolean isMti;
+  protected boolean isFlightKey;
+  protected Field parent;
+  protected int sequence;
 
-    protected List<Field> children = Lists.newArrayList();
-    protected Map<Integer, Field> childrenBySequenceMap = Maps.newHashMap();
+  protected List<Field> children = Lists.newArrayList();
+  protected Map<Integer, Field> childrenBySequenceMap = Maps.newHashMap();
 
-    protected Spec spec;
+  protected Spec spec;
 
-    public Field() {
+  public Field() {}
+
+  public int getFieldId() {
+    return fieldId;
+  }
+
+  public void setFieldId(int fieldId) {
+    this.fieldId = fieldId;
+  }
+
+  public int getSequence() {
+    return sequence;
+  }
+
+  public void setSequence(int sequence) {
+    this.sequence = sequence;
+  }
+
+  public Spec getSpec() {
+    return spec;
+  }
+
+  public void setSpec(Spec spec) {
+    this.spec = spec;
+  }
+
+  public String getFieldName() {
+    return fieldName;
+  }
+
+  public void setFieldName(String fieldName) {
+    this.fieldName = fieldName;
+  }
+
+  public FIELD_TYPE getFieldType() {
+
+    if (fieldType == null) {
+      if (Predicates.instanceOf(FixedField.class).apply(this)) {
+        fieldType = FIELD_TYPE.FIXED;
+      }
+      if (Predicates.instanceOf(VariableField.class).apply(this)) {
+        fieldType = FIELD_TYPE.VARIABLE;
+      }
+      if (Predicates.instanceOf(BitmappedField.class).apply(this)) {
+        fieldType = FIELD_TYPE.BITMAPPED;
+      }
+      if (Predicates.instanceOf(TerminatedField.class).apply(this)) {
+        fieldType = FIELD_TYPE.TERMINATED;
+      }
     }
 
-    public int getFieldId() {
-        return fieldId;
-    }
+    return fieldType;
+  }
 
-    public void setFieldId(int fieldId) {
-        this.fieldId = fieldId;
-    }
+  public void setFieldType(FIELD_TYPE fieldType) {
+    this.fieldType = fieldType;
+  }
 
-    public int getSequence() {
-        return sequence;
-    }
+  public int getLength() {
+    return length;
+  }
 
-    public void setSequence(int sequence) {
-        this.sequence = sequence;
-    }
+  public void setLength(int length) {
+    this.length = length;
+  }
 
-    public Spec getSpec() {
-        return spec;
-    }
+  public ENCODING_TYPE getEncodingType() {
+    return encodingType;
+  }
 
-    public void setSpec(Spec spec) {
-        this.spec = spec;
-    }
+  public void setEncodingType(ENCODING_TYPE encodingType) {
+    this.encodingType = encodingType;
+  }
 
-    public String getFieldName() {
-        return fieldName;
-    }
+  public boolean isMti() {
+    return isMti;
+  }
 
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
-    }
+  public void setMti(boolean isMti) {
+    this.isMti = isMti;
+  }
 
-    public FIELD_TYPE getFieldType() {
+  public boolean isFlightKey() {
+    return isFlightKey;
+  }
 
-        if (fieldType == null) {
-            if (Predicates.instanceOf(FixedField.class).apply(this)) {
-                fieldType = FIELD_TYPE.FIXED;
-            }
-            if (Predicates.instanceOf(VariableField.class).apply(this)) {
-                fieldType = FIELD_TYPE.VARIABLE;
-            }
-            if (Predicates.instanceOf(BitmappedField.class).apply(this)) {
-                fieldType = FIELD_TYPE.BITMAPPED;
-            }
-            if (Predicates.instanceOf(TerminatedField.class).apply(this)) {
-                fieldType = FIELD_TYPE.TERMINATED;
-            }
-        }
+  public void setFlightKey(boolean isFlightKey) {
+    this.isFlightKey = isFlightKey;
+  }
 
-        return fieldType;
-    }
+  public Field getParent() {
+    return parent;
+  }
 
-    public void setFieldType(FIELD_TYPE fieldType) {
-        this.fieldType = fieldType;
-    }
+  public void setParent(Field parent) {
+    this.parent = parent;
+  }
 
-    public int getLength() {
-        return length;
-    }
+  public String toString() {
+    String label =
+        (getSequence() != -1) ? "(" + getSequence() + ") " + getFieldName() : getFieldName();
+    return (label);
+  }
 
-    public void setLength(int length) {
-        this.length = length;
-    }
+  @JsonSetter
+  public void setChildren(List<Field> children) {
+    children.forEach(this::addChild);
+  }
 
-    public ENCODING_TYPE getEncodingType() {
-        return encodingType;
-    }
+  private void addChild(Field f) {
+    children.add(f);
+    childrenBySequenceMap.put(f.getSequence(), f);
+    Collections.sort(children, (field1, field2) -> (field1.getSequence() - field2.getSequence()));
+  }
 
-    public void setEncodingType(ENCODING_TYPE encodingType) {
-        this.encodingType = encodingType;
-    }
+  public Field getChild(int sequence) {
+    return (childrenBySequenceMap.get(sequence));
+  }
 
-    public boolean isMti() {
-        return isMti;
-    }
-
-    public void setMti(boolean isMti) {
-        this.isMti = isMti;
-    }
-
-    public boolean isFlightKey() {
-        return isFlightKey;
-    }
-
-    public void setFlightKey(boolean isFlightKey) {
-        this.isFlightKey = isFlightKey;
-    }
-
-    public Field getParent() {
-        return parent;
-    }
-
-    public void setParent(Field parent) {
-        this.parent = parent;
-    }
-
-    public String toString() {
-        String label =
-                (getSequence() != -1) ? "(" + getSequence() + ") " + getFieldName() : getFieldName();
-        return (label);
-    }
-
-    @JsonSetter
-    public void setChildren(List<Field> children) {
-        children.forEach(this::addChild);
-    }
-
-    private void addChild(Field f) {
-        children.add(f);
-        childrenBySequenceMap.put(f.getSequence(), f);
-        Collections.sort(
-                children,
-                (field1, field2) -> (field1.getSequence() - field2.getSequence()));
-    }
-
-    public Field getChild(int sequence) {
-        return (childrenBySequenceMap.get(sequence));
-    }
-
-    public List<Field> getChildren() {
-        return (children);
-    }
+  public List<Field> getChildren() {
+    return (children);
+  }
 
   /*	public static void update(Field field) {
 
@@ -435,31 +430,31 @@ public abstract class Field extends Model {
 
   }*/
 
-    public boolean hasChildren() {
-        return (children.size() > 0);
-    }
+  public boolean hasChildren() {
+    return (children.size() > 0);
+  }
 
-    public String dumpToString() {
+  public String dumpToString() {
 
-        StringBuilder builder = new StringBuilder();
-        dumpInternal(builder, 0);
-        return builder.toString();
-    }
+    StringBuilder builder = new StringBuilder();
+    dumpInternal(builder, 0);
+    return builder.toString();
+  }
 
-    private void dumpInternal(StringBuilder builder, int indent) {
-        builder.append(
-                "field: "
-                        + Strings.padStart(">", indent + 1, '-')
-                        + getFieldName()
-                        + " type:"
-                        + getFieldType()
-                        + " length:"
-                        + length
-                        + " encoding:"
-                        + getEncodingType()
-                        + "\n");
-        if (getChildren() != null && getChildren().size() > 0) {
-            getChildren().forEach(f -> f.dumpInternal(builder, indent + 1));
-        }
+  private void dumpInternal(StringBuilder builder, int indent) {
+    builder.append(
+        "field: "
+            + Strings.padStart(">", indent + 1, '-')
+            + getFieldName()
+            + " type:"
+            + getFieldType()
+            + " length:"
+            + length
+            + " encoding:"
+            + getEncodingType()
+            + "\n");
+    if (getChildren() != null && getChildren().size() > 0) {
+      getChildren().forEach(f -> f.dumpInternal(builder, indent + 1));
     }
+  }
 }

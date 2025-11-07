@@ -6,13 +6,13 @@ import com.google.inject.Injector;
 
 public class GuiceInjector {
 
-    private static final Injector injector;
+  private static final Injector injector;
 
-    static {
-        injector = Guice.createInjector(new KeedohDefaultModule());
-    }
+  static {
+    injector = Guice.createInjector(new KeedohDefaultModule());
+  }
 
-    public static Injector getInjector() {
-        return injector;
-    }
+  public static Injector getInjector() {
+    return injector;
+  }
 }

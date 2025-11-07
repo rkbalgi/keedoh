@@ -11,43 +11,42 @@ import org.apache.logging.log4j.Logger;
 
 public class ListenerChannelHandler extends ChannelDuplexHandler {
 
-    private Logger log = LogManager.getLogger(getClass());
+  private Logger log = LogManager.getLogger(getClass());
 
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        super.exceptionCaught(ctx, cause);
-        log.error(cause);
+  @Override
+  public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    super.exceptionCaught(ctx, cause);
+    log.error(cause);
+  }
+
+  @Override
+  public void channelRead(ChannelHandlerContext ctx, Object msg) {
+    // super.channelRead(ctx, msg);
+    // this.channelReadComplete();
+
+    System.out.println("data received");
+    ListenerConfig config = Listeners.getConfigForChannel(ctx.channel());
+    log.debug(config);
+    ByteBuf buffer = (ByteBuf) msg;
+    if (config.getMli().getMliImpl().packetExists(buffer)) {
+      byte[] data = config.getMli().getMliImpl().fromNetwork(buffer);
+      Spec spec = Listeners.getSpecForConfig(config);
+      MessagingManager.getInstance()
+          .handleIncomingServerMessage(spec, data, config.getProcessorScript());
     }
+  }
 
+  @Override
+  public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+    super.channelInactive(ctx);
+    log.debug(String.format("channel closed - %s", ctx.channel().remoteAddress()));
+    Listeners.close(ctx.channel());
+  }
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        //super.channelRead(ctx, msg);
-        //this.channelReadComplete();
-
-        System.out.println("data received");
-        ListenerConfig config = Listeners.getConfigForChannel(ctx.channel());
-        log.debug(config);
-        ByteBuf buffer = (ByteBuf) msg;
-        if (config.getMli().getMliImpl().packetExists(buffer)) {
-            byte[] data = config.getMli().getMliImpl().fromNetwork(buffer);
-            Spec spec = Listeners.getSpecForConfig(config);
-            MessagingManager.getInstance()
-                    .handleIncomingServerMessage(spec, data, config.getProcessorScript());
-        }
-    }
-
-    @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        super.channelInactive(ctx);
-        log.debug(String.format("channel closed - %s", ctx.channel().remoteAddress()));
-        Listeners.close(ctx.channel());
-    }
-
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        super.channelActive(ctx);
-        log.debug(String.format("channel opened - %s", ctx.channel().remoteAddress()));
-        Listeners.add(ctx.channel());
-    }
+  @Override
+  public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    super.channelActive(ctx);
+    log.debug(String.format("channel opened - %s", ctx.channel().remoteAddress()));
+    Listeners.add(ctx.channel());
+  }
 }

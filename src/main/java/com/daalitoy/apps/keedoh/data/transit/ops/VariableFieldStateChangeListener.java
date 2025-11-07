@@ -6,35 +6,28 @@ import com.daalitoy.apps.keedoh.data.transit.MessageData;
 
 public class VariableFieldStateChangeListener extends FieldStateChangeListener {
 
-    private static VariableFieldStateChangeListener instance = new VariableFieldStateChangeListener();
+  private static VariableFieldStateChangeListener instance = new VariableFieldStateChangeListener();
 
-    public static FieldStateChangeListener getInstance() {
-        return (instance);
-    }
+  public static FieldStateChangeListener getInstance() {
+    return (instance);
+  }
 
-    @Override
-    public void fieldSelectionChanged(MessageData msgData, FieldData fieldData,
-                                      boolean selected) {
+  @Override
+  public void fieldSelectionChanged(MessageData msgData, FieldData fieldData, boolean selected) {
 
-        Field parent = fieldData.getField().getParent();
-        if (parent != null) {
-            if (BITMAP_CLASS_CHECK.apply(parent)) {
-                // set the bit on for the bitmap
-                if (selected) {
-                    msgData.getFieldData(parent).setOn(
-                            fieldData.getField().getSequence());
-                } else {
-                    msgData.getFieldData(parent).setOff(
-                            fieldData.getField().getSequence());
-
-                }
-            }
+    Field parent = fieldData.getField().getParent();
+    if (parent != null) {
+      if (BITMAP_CLASS_CHECK.apply(parent)) {
+        // set the bit on for the bitmap
+        if (selected) {
+          msgData.getFieldData(parent).setOn(fieldData.getField().getSequence());
+        } else {
+          msgData.getFieldData(parent).setOff(fieldData.getField().getSequence());
         }
-
+      }
     }
+  }
 
-    @Override
-    public void fieldDataChanged(FieldData fieldData, boolean stringFlavour) {
-    }
-
+  @Override
+  public void fieldDataChanged(FieldData fieldData, boolean stringFlavour) {}
 }

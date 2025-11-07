@@ -2,9 +2,9 @@ package com.daalitoy.apps.keedoh.data.util;
 
 public interface Charset {
 
-    String toString(byte[] data);
+  String toString(byte[] data);
 
-    byte[] fromString(String stringData);
+  byte[] fromString(String stringData);
 
-    int toInt(byte[] data);
+  int toInt(byte[] data);
 }

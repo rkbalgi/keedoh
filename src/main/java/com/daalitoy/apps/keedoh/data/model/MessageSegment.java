@@ -3,63 +3,60 @@ package com.daalitoy.apps.keedoh.data.model;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import java.util.List;
 import java.util.Map;
 
 public class MessageSegment extends Model {
 
-    private List<Field> fields = Lists.newArrayList();
-    private Map<String, Field> fieldMap = Maps.newHashMap();
+  private List<Field> fields = Lists.newArrayList();
+  private Map<String, Field> fieldMap = Maps.newHashMap();
 
-    private String segmentName;
-    private List<String> mti;
+  private String segmentName;
+  private List<String> mti;
 
-    public MessageSegment() {
+  public MessageSegment() {}
+
+  private void wireField(Field field) {
+
+    add(field);
+    if (field.children != null && field.children.size() > 0) {
+      field.children.forEach(
+          child -> {
+            fieldMap.put(child.fieldName, child);
+            child.setParent(field);
+          });
     }
+  }
 
-    private void wireField(Field field) {
+  public String getSegmentName() {
+    return segmentName;
+  }
 
-        add(field);
-        if (field.children != null && field.children.size() > 0) {
-            field.children.forEach(
-                    child -> {
-                        fieldMap.put(child.fieldName, child);
-                        child.setParent(field);
-                    });
-        }
-    }
+  public void setSegmentName(String segmentName) {
+    this.segmentName = segmentName;
+  }
 
-    public String getSegmentName() {
-        return segmentName;
-    }
+  public void add(Field field) {
+    fields.add(field);
+    fieldMap.put(field.getFieldName(), field);
+  }
 
-    public void setSegmentName(String segmentName) {
-        this.segmentName = segmentName;
-    }
+  public boolean contains(Field field) {
+    return fields.contains(field);
+  }
 
-    public void add(Field field) {
-        fields.add(field);
-        fieldMap.put(field.getFieldName(), field);
-    }
+  public void remove(Field field) {
+    fields.remove(field);
+  }
 
-    public boolean contains(Field field) {
-        return fields.contains(field);
-    }
+  public List<Field> getFields() {
+    return fields;
+  }
 
-    public void remove(Field field) {
-        fields.remove(field);
-    }
-
-    public List<Field> getFields() {
-        return fields;
-    }
-
-    @JsonSetter
-    public void setFields(List<Field> fields) {
-        fields.forEach(
-                f -> wireField(f));
-    }
+  @JsonSetter
+  public void setFields(List<Field> fields) {
+    fields.forEach(f -> wireField(f));
+  }
 
   /*	public static MessageSegment fromDb(Spec spec, int fragId) {
   	try {
@@ -80,22 +77,22 @@ public class MessageSegment extends Model {
 
   }*/
 
-    public void swapFields(int a, int b) {
+  public void swapFields(int a, int b) {
 
-        Field fieldA = fields.get(a);
-        fields.set(a, fields.get(b));
-        fields.set(b, fieldA);
-    }
+    Field fieldA = fields.get(a);
+    fields.set(a, fields.get(b));
+    fields.set(b, fieldA);
+  }
 
-    public Field getFieldByName(String fieldName) {
-        return (fieldMap.get(fieldName));
-    }
+  public Field getFieldByName(String fieldName) {
+    return (fieldMap.get(fieldName));
+  }
 
-    public List<String> getMti() {
-        return mti;
-    }
+  public List<String> getMti() {
+    return mti;
+  }
 
-    public void setMti(List<String> mti) {
-        this.mti = mti;
-    }
+  public void setMti(List<String> mti) {
+    this.mti = mti;
+  }
 }

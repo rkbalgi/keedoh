@@ -8,111 +8,103 @@ import com.daalitoy.apps.keedoh.data.model.Field;
 import com.daalitoy.apps.keedoh.data.transit.ops.FieldStateChangeListener;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+import java.io.ByteArrayOutputStream;
+import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.ByteArrayOutputStream;
-import java.util.Map;
-
 public class FieldData {
 
-    protected static final Logger log = LogManager.getLogger(FieldData.class);
-    private static final Map<FIELD_TYPE, FieldProcessor> processorMap = Maps
-            .newHashMap();
+  protected static final Logger log = LogManager.getLogger(FieldData.class);
+  private static final Map<FIELD_TYPE, FieldProcessor> processorMap = Maps.newHashMap();
 
-    static {
-        processorMap.put(FIELD_TYPE.FIXED, new FixedFieldProcessor());
-        processorMap.put(FIELD_TYPE.TERMINATED, new TerminatedFieldProcessor());
-        processorMap.put(FIELD_TYPE.VARIABLE, new VariableFieldProcessor());
-        processorMap.put(FIELD_TYPE.BITMAPPED, new BitmappedFieldProcessor());
+  static {
+    processorMap.put(FIELD_TYPE.FIXED, new FixedFieldProcessor());
+    processorMap.put(FIELD_TYPE.TERMINATED, new TerminatedFieldProcessor());
+    processorMap.put(FIELD_TYPE.VARIABLE, new VariableFieldProcessor());
+    processorMap.put(FIELD_TYPE.BITMAPPED, new BitmappedFieldProcessor());
+  }
+
+  private Field field;
+  private byte[] data;
+  private String stringData = "";
+  private boolean selected;
+  private FieldStateChangeListener listener;
+
+  // for bitmapped field's
+  private Bit bitmap = new Bit(new byte[16]);
+  private MessageData msgData;
+
+  public FieldData(MessageData msgData, Field field, byte[] data, boolean selected) {
+    this.msgData = msgData;
+    this.field = field;
+    this.data = data;
+    this.selected = selected;
+
+    if (field.getFieldType() == FIELD_TYPE.BITMAPPED) {
+      if (data != null) bitmap = new Bit(data);
     }
+  }
 
-    private Field field;
-    private byte[] data;
-    private String stringData = "";
-    private boolean selected;
-    private FieldStateChangeListener listener;
+  public Field getField() {
+    return (field);
+  }
 
-    // for bitmapped field's
-    private Bit bitmap = new Bit(new byte[16]);
-    private MessageData msgData;
+  public byte[] getData() {
 
-    public FieldData(MessageData msgData, Field field, byte[] data,
-                     boolean selected) {
-        this.msgData = msgData;
-        this.field = field;
-        this.data = data;
-        this.selected = selected;
-
-        if (field.getFieldType() == FIELD_TYPE.BITMAPPED) {
-            if (data != null)
-                bitmap = new Bit(data);
-        }
-
+    if (field instanceof BitmappedField) {
+      return (bitmap.getData());
     }
+    return data;
+  }
 
-    public Field getField() {
-        return (field);
-    }
+  public void setData(byte[] data) {
+    this.data = data;
+  }
 
-    public byte[] getData() {
+  public void setOn(int position) {
+    Preconditions.checkArgument(field instanceof BitmappedField);
+    bitmap.setOn(position);
+  }
 
-        if (field instanceof BitmappedField) {
-            return (bitmap.getData());
-        }
-        return data;
-    }
+  public void setOff(int position) {
+    Preconditions.checkArgument(field instanceof BitmappedField);
+    bitmap.setOff(position);
+  }
 
-    public void setData(byte[] data) {
-        this.data = data;
-    }
+  public void assemble(ByteArrayOutputStream bos) {
+    processorMap.get(field.getFieldType()).assemble(field, msgData, bos);
+  }
 
-    public void setOn(int position) {
-        Preconditions.checkArgument(field instanceof BitmappedField);
-        bitmap.setOn(position);
-    }
+  public String getStringData() {
+    String stringData = processorMap.get(field.getFieldType()).toStringData(field, getData());
+    return (stringData);
+  }
 
-    public void setOff(int position) {
-        Preconditions.checkArgument(field instanceof BitmappedField);
-        bitmap.setOff(position);
-    }
+  public void setStringData(String stringData) {
+    this.stringData = stringData;
+    this.data = processorMap.get(field.getFieldType()).toBinaryData(field, stringData);
+  }
 
-    public void assemble(ByteArrayOutputStream bos) {
-        processorMap.get(field.getFieldType()).assemble(field, msgData, bos);
-    }
+  public boolean isSelected() {
+    return selected;
+  }
 
-    public String getStringData() {
-        String stringData = processorMap.get(field.getFieldType())
-                .toStringData(field, getData());
-        return (stringData);
-    }
+  public void setSelected(boolean selected) {
+    this.selected = selected;
+    listener.fieldSelectionChanged(msgData, this, selected);
+  }
 
-    public void setStringData(String stringData) {
-        this.stringData = stringData;
-        this.data = processorMap.get(field.getFieldType()).toBinaryData(field,
-                stringData);
-    }
+  // listeners for field change events
+  public FieldStateChangeListener getListener() {
+    return listener;
+  }
 
-    public boolean isSelected() {
-        return selected;
-    }
+  public void setListener(FieldStateChangeListener listener) {
+    this.listener = listener;
+  }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-        listener.fieldSelectionChanged(msgData, this, selected);
-    }
-
-    // listeners for field change events
-    public FieldStateChangeListener getListener() {
-        return listener;
-    }
-
-    public void setListener(FieldStateChangeListener listener) {
-        this.listener = listener;
-    }
-
-    public boolean isOn(int position) {
-        return (bitmap.isOn(position));
-    }
-
+  public boolean isOn(int position) {
+    return (bitmap.isOn(position));
+  }
 }
