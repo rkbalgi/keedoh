@@ -9,14 +9,22 @@ import com.daalitoy.apps.keedoh.ui.util.IconFactory;
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JEditorPane;
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JToolBar;
 
 public class MessageStoreInternalFrame extends JInternalFrame implements ActionListener {
 

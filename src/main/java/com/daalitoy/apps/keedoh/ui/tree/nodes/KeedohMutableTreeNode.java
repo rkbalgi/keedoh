@@ -2,7 +2,7 @@ package com.daalitoy.apps.keedoh.ui.tree.nodes;
 
 import com.daalitoy.apps.keedoh.data.model.Field;
 import java.util.Enumeration;
-import javax.swing.*;
+import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;

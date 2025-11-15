@@ -1,10 +1,15 @@
 package com.daalitoy.apps.keedoh.ui.dialog;
 
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class TraceInputDialog extends JDialog implements ActionListener {
 

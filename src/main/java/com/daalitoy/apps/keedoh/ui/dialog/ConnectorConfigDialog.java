@@ -3,11 +3,17 @@ package com.daalitoy.apps.keedoh.ui.dialog;
 import com.daalitoy.apps.keedoh.data.model.ConnectorConfig;
 import com.daalitoy.apps.keedoh.data.model.MLI;
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
-import javax.swing.*;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class ConnectorConfigDialog extends JDialog implements ActionListener {
 

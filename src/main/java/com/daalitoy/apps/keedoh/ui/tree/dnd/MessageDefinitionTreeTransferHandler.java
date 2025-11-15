@@ -1,10 +1,15 @@
 package com.daalitoy.apps.keedoh.ui.tree.dnd;
 
 import com.daalitoy.apps.keedoh.data.model.Field;
-import com.daalitoy.apps.keedoh.ui.tree.nodes.*;
+import com.daalitoy.apps.keedoh.ui.tree.nodes.FieldTreeNode;
+import com.daalitoy.apps.keedoh.ui.tree.nodes.KeedohMutableTreeNode;
+import com.daalitoy.apps.keedoh.ui.tree.nodes.MessageFieldTreeNode;
+import com.daalitoy.apps.keedoh.ui.tree.nodes.RequestFragmentTreeNode;
+import com.daalitoy.apps.keedoh.ui.tree.nodes.ResponseFragmentTreeNode;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import javax.swing.*;
+import javax.swing.JTree;
+import javax.swing.TransferHandler;
 
 public class MessageDefinitionTreeTransferHandler extends TransferHandler {
 

@@ -4,10 +4,14 @@ import com.daalitoy.apps.keedoh.data.model.Spec;
 import com.daalitoy.apps.keedoh.system.SpecManager;
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
 import com.google.inject.Inject;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
 
 public class SpecSelectionDialog extends JDialog implements ActionListener {
 

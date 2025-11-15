@@ -1,12 +1,27 @@
 package com.daalitoy.apps.keedoh.ui.main.tree;
 
-import com.daalitoy.apps.keedoh.data.model.*;
+import com.daalitoy.apps.keedoh.data.model.BitmappedField;
+import com.daalitoy.apps.keedoh.data.model.ConnectorConfig;
+import com.daalitoy.apps.keedoh.data.model.Field;
+import com.daalitoy.apps.keedoh.data.model.FixedField;
+import com.daalitoy.apps.keedoh.data.model.ListenerConfig;
+import com.daalitoy.apps.keedoh.data.model.TerminatedField;
+import com.daalitoy.apps.keedoh.data.model.VariableField;
 import com.daalitoy.apps.keedoh.net.client.Connectors;
 import com.daalitoy.apps.keedoh.net.server.Listeners;
-import com.daalitoy.apps.keedoh.ui.tree.nodes.*;
+import com.daalitoy.apps.keedoh.ui.tree.nodes.FieldTreeNode;
+import com.daalitoy.apps.keedoh.ui.tree.nodes.KeedohMutableTreeNode;
+import com.daalitoy.apps.keedoh.ui.tree.nodes.MessageFieldTreeNode;
+import com.daalitoy.apps.keedoh.ui.tree.nodes.MessageSpecFieldDictTreeNode;
+import com.daalitoy.apps.keedoh.ui.tree.nodes.MessageTreeNode;
+import com.daalitoy.apps.keedoh.ui.tree.nodes.MessagesTreeNode;
+import com.daalitoy.apps.keedoh.ui.tree.nodes.RequestFragmentTreeNode;
+import com.daalitoy.apps.keedoh.ui.tree.nodes.ResponseFragmentTreeNode;
 import com.daalitoy.apps.keedoh.ui.util.IconFactory;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Component;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 public class KeedohTreeCellRenderer extends DefaultTreeCellRenderer {

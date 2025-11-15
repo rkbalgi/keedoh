@@ -3,8 +3,15 @@ package com.daalitoy.apps.keedoh.ui.frames.internal;
 import com.daalitoy.apps.keedoh.data.transit.MessageData;
 import com.daalitoy.apps.keedoh.ui.table.data.EditableMessageTableModel;
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class ResponseMsgDialog extends JDialog {
 

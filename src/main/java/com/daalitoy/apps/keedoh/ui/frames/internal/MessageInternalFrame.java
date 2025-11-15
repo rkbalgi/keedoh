@@ -11,18 +11,27 @@ import com.daalitoy.apps.keedoh.net.KeedohNetException;
 import com.daalitoy.apps.keedoh.ui.dialog.ConnectorSelectionDialog;
 import com.daalitoy.apps.keedoh.ui.dialog.TraceInputDialog;
 import com.daalitoy.apps.keedoh.ui.dialog.TraceSelectionDialog;
+import com.daalitoy.apps.keedoh.ui.frames.KeedohMainFrame;
 import com.daalitoy.apps.keedoh.ui.table.data.EditableMessageTableModel;
 import com.daalitoy.apps.keedoh.ui.util.Hex;
 import com.daalitoy.apps.keedoh.ui.util.IconFactory;
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JToolBar;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,10 +56,13 @@ public class MessageInternalFrame extends JInternalFrame implements ActionListen
     setIconifiable(true);
     setMaximizable(true);
     setResizable(true);
-    setSize(600, 400);
+    Dimension dimension = KeedohMainFrame.getDesktopPane().getSize();
+
+    setSize((int) (dimension.width * .75), (int) (dimension.height * .75));
     setFrameIcon(UIHelper.getAppIcon());
     setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
     setFont(UIHelper.STANDARD_FONT);
+
     setVisible(true);
   }
 

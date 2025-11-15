@@ -3,7 +3,9 @@ package com.daalitoy.apps.keedoh.ui.tree.dnd;
 import com.daalitoy.apps.keedoh.ui.tree.nodes.KeedohMutableTreeNode;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JTree;
+import javax.swing.TransferHandler;
 
 public class MessageSpecDictTreeTransferHandler extends TransferHandler {
 

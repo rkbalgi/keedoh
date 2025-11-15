@@ -2,11 +2,30 @@ package com.daalitoy.apps.keedoh.ui.util;
 
 import com.daalitoy.apps.keedoh.data.common.FILE_TYPE;
 import com.daalitoy.apps.keedoh.system.KeedohCache;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
-import javax.swing.*;
+import java.util.stream.Collectors;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class UIHelper {
@@ -15,6 +34,16 @@ public class UIHelper {
       new ImageIcon(ClassLoader.getSystemResource("images/keedoh_node.gif"));
   public static Font STANDARD_FONT = new Font("calibri", Font.PLAIN, 12);
   public static Font STANDARD_BOLD_FONT = new Font("calibri", Font.BOLD, 12);
+
+  static {
+    List<Font> allFonts =
+        Arrays.stream(GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts())
+            .collect(Collectors.toList());
+    if (allFonts.stream().anyMatch(f -> f.getFamily().equalsIgnoreCase("Monaco"))) {
+      STANDARD_FONT = new Font("Monaco", Font.PLAIN, 12);
+      STANDARD_BOLD_FONT = new Font("Monaco", Font.BOLD, 12);
+    }
+  }
 
   public static JMenuItem newJMenuItem(
       String label, int keyCode, ActionListener actionListener, String actionCommand) {

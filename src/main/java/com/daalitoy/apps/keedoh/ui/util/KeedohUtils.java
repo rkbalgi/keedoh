@@ -1,6 +1,7 @@
 package com.daalitoy.apps.keedoh.ui.util;
 
-import java.awt.*;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 
 public class KeedohUtils {
 

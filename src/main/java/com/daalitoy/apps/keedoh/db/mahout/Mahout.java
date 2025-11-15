@@ -1,7 +1,11 @@
 package com.daalitoy.apps.keedoh.db.mahout;
 
 import com.daalitoy.apps.keedoh.system.Properties;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

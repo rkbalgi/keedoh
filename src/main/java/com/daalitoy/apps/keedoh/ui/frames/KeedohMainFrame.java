@@ -10,20 +10,40 @@ import com.daalitoy.apps.keedoh.ui.dialog.AboutDialog;
 import com.daalitoy.apps.keedoh.ui.dialog.ConnectorConfigDialog;
 import com.daalitoy.apps.keedoh.ui.dialog.ListenerConfigDialog;
 import com.daalitoy.apps.keedoh.ui.frames.internal.MessageStoreInternalFrame;
-import com.daalitoy.apps.keedoh.ui.main.tree.*;
+import com.daalitoy.apps.keedoh.ui.main.tree.ConnectorTreeNode;
+import com.daalitoy.apps.keedoh.ui.main.tree.ConnectorsConfigTreeNode;
+import com.daalitoy.apps.keedoh.ui.main.tree.KeedohTreeCellRenderer;
+import com.daalitoy.apps.keedoh.ui.main.tree.ListenerTreeNode;
+import com.daalitoy.apps.keedoh.ui.main.tree.ListenersConfigTreeNode;
+import com.daalitoy.apps.keedoh.ui.main.tree.SpecsTreeNode;
 import com.daalitoy.apps.keedoh.ui.tree.nodes.KeedohMutableTreeNode;
 import com.daalitoy.apps.keedoh.ui.util.KeedohUtils;
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
 import com.google.inject.Inject;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Component;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JComponent;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTree;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class KeedohMainFrame extends JFrame implements ActionListener {
 
-  /**
-   *
-   */
+  private static final Logger LOG = LogManager.getLogger(KeedohMainFrame.class);
   private static final long serialVersionUID = 1L;
 
   private static KeedohMainFrame instance = null;
@@ -214,6 +234,8 @@ public class KeedohMainFrame extends JFrame implements ActionListener {
     try {
 
       desktopPane.add(frame);
+      desktopPane.setSelectedFrame(frame);
+      frame.moveToFront();
       // frame.setMaximum(true);
     } catch (Exception e) {
       e.printStackTrace();

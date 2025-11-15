@@ -1,12 +1,17 @@
 package com.daalitoy.apps.keedoh.ui.dialog;
 
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Vector;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JInternalFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 public class TraceSelectionDialog extends JDialog implements ActionListener {
 

@@ -2,7 +2,8 @@ package com.daalitoy.apps.keedoh.ui.util;
 
 import com.google.common.collect.Maps;
 import java.util.Map;
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 public class IconFactory {
 

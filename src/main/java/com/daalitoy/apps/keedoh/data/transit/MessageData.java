@@ -1,7 +1,11 @@
 package com.daalitoy.apps.keedoh.data.transit;
 
 import com.daalitoy.apps.keedoh.data.fields.processor.FieldProcessors;
-import com.daalitoy.apps.keedoh.data.model.*;
+import com.daalitoy.apps.keedoh.data.model.BitmappedField;
+import com.daalitoy.apps.keedoh.data.model.Field;
+import com.daalitoy.apps.keedoh.data.model.Message;
+import com.daalitoy.apps.keedoh.data.model.MessageSegment;
+import com.daalitoy.apps.keedoh.data.model.Spec;
 import com.daalitoy.apps.keedoh.data.transit.ops.FieldStateChangeListener;
 import com.daalitoy.apps.keedoh.ui.util.Hex;
 import com.google.common.collect.Lists;

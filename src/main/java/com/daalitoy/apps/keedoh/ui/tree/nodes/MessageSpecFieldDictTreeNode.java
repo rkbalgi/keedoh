@@ -9,7 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.Enumeration;
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.tree.TreeNode;
 
 public class MessageSpecFieldDictTreeNode extends KeedohMutableTreeNode

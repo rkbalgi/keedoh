@@ -6,7 +6,7 @@ import com.daalitoy.apps.keedoh.ui.util.UIHelper;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import javax.swing.*;
+import javax.swing.JPopupMenu;
 
 public class MessageTreeNode extends KeedohMutableTreeNode implements CanPopUp, ActionListener {
 

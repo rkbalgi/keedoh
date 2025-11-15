@@ -8,10 +8,16 @@ import com.daalitoy.apps.keedoh.ui.tree.dnd.MessageSpecDictTreeTransferHandler;
 import com.daalitoy.apps.keedoh.ui.tree.nodes.MessageSpecFieldDictTreeNode;
 import com.daalitoy.apps.keedoh.ui.tree.nodes.MessagesTreeNode;
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.*;
+import javax.swing.DropMode;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 
 public class NewMessageSpecificationInternalFrame extends JInternalFrame {

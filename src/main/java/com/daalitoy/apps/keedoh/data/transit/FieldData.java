@@ -1,7 +1,11 @@
 package com.daalitoy.apps.keedoh.data.transit;
 
 import com.daalitoy.apps.keedoh.data.common.FIELD_TYPE;
-import com.daalitoy.apps.keedoh.data.fields.processor.*;
+import com.daalitoy.apps.keedoh.data.fields.processor.BitmappedFieldProcessor;
+import com.daalitoy.apps.keedoh.data.fields.processor.FieldProcessor;
+import com.daalitoy.apps.keedoh.data.fields.processor.FixedFieldProcessor;
+import com.daalitoy.apps.keedoh.data.fields.processor.TerminatedFieldProcessor;
+import com.daalitoy.apps.keedoh.data.fields.processor.VariableFieldProcessor;
 import com.daalitoy.apps.keedoh.data.model.Bit;
 import com.daalitoy.apps.keedoh.data.model.BitmappedField;
 import com.daalitoy.apps.keedoh.data.model.Field;

@@ -52,6 +52,7 @@ spotless {
         // fix formatting of type annotations
         formatAnnotations()
         removeUnusedImports()
+        forbidWildcardImports()
 
     }
 }

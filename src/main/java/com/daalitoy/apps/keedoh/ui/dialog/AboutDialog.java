@@ -2,10 +2,15 @@ package com.daalitoy.apps.keedoh.ui.dialog;
 
 import com.daalitoy.apps.keedoh.ui.util.UIHelper;
 import com.google.common.io.Resources;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class AboutDialog extends JDialog implements ActionListener {
 
